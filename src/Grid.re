@@ -7,14 +7,15 @@ let initialState = {
 };
 
 type coord = {
-    rowId: int,
-    colId: int
+    row: int,
+    col: int
 };
 
 let gridReducer = (state, coord) => {
-    state.grid[coord.rowId][coord.colId] = Unit.unitChange(state.grid[coord.rowId][coord.colId]);
+    state.grid[coord.row][coord.col] = Unit.unitChange(state.grid[coord.row][coord.col]);
     {grid: state.grid}
 };
+
 
 
 [@react.component]
@@ -29,7 +30,7 @@ let make = () => {
                 key=("coord "++string_of_int(rowId)++" "++string_of_int(colId))
                 id=("unit "++string_of_int(rowId)++" "++string_of_int(colId))
                 toggleUnit=dispatch
-                coord={rowId: rowId, colId: colId}
+                coord={row: rowId, col: colId}
                 unit=state.grid[rowId][colId]
                 >
             </Unit>

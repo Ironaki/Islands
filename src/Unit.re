@@ -29,6 +29,14 @@ let unitChange = (u: unitType) => {
     };
 };
 
+let unitCost = (u: unitType) => {
+    switch (u) {
+    | Road => 1
+    | Mountain => 3
+    | Water => -1  // Should never call on Water
+    };
+};
+
 type state = {
     unit: unitType
 };
