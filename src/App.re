@@ -1,5 +1,3 @@
-
-
 type state = {count: int};
 
 type action =
@@ -30,9 +28,14 @@ let make = () => {
       <button onClick={_ => dispatch(Increment)}>
         {React.string("Increment")}
       </button>
-
     </div>
-    <World>
-    </World>
+    <div>
+      <World>
+      </World>
+    </div>
+/*     <div>
+      <Sandbox>
+      </Sandbox>
+    </div> */
   </main>;
 };

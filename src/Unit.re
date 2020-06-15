@@ -37,21 +37,17 @@ let initialState = {
     unit: Road
 };
 
-let reducer = (state, _) => {
+/* let reducer = (state, _) => {
     {unit: unitChange(state.unit)}
-};
+}; */
 
 [@react.component]
-let make = (~id) => {
-    /* let unitInitial = Road;     */
-/*     let (u, change) = React.useState(_ => unitInitial); */
-    let (state, dispatch) = React.useReducer(reducer, initialState);
-    Js.log(state);
+let make = (~id, ~toggleUnit, ~unit as u, ~coord) => {
     <button 
         id = id
-        className=unitClass(state.unit)
-        onClick = {_ => dispatch()}
+        className=unitClass(u)
+        onClick = {_ => toggleUnit(coord)}
         >            
-        {unitDisplay(state.unit)}
+        {unitDisplay(u)}
     </button>
 }
