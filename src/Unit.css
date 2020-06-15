@@ -1,0 +1,41 @@
+.Road {
+    background: #f0f2e9;
+    border: 1px dashed #999;
+    float: left;
+    font-size: 25px;
+    line-height: 34px;
+    height: 28px;
+    margin-right: -1px;
+    margin-top: -1px;
+    padding: 0;
+    text-align: center;
+    width: 28px;
+}
+
+.Mountain {
+    background: #ffc875;
+    border: 1px dashed #999;
+    float: left;
+    font-size: 25px;
+    line-height: 34px;
+    height: 28px;
+    margin-right: -1px;
+    margin-top: -1px;
+    padding: 0;
+    text-align: center;
+    width: 28px;
+}
+
+.Water {
+    background: #bde1ff;
+    border: 1px dashed #999;
+    float: left;
+    font-size: 25px;
+    line-height: 34px;
+    height: 28px;
+    margin-right: -1px;
+    margin-top: -1px;
+    padding: 0;
+    text-align: center;
+    width: 28px;
+}
