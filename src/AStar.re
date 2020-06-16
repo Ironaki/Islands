@@ -64,17 +64,15 @@ let aStar = (grid: array(array(unitType))) => {
     };
     let lastNode = aStarRecHelper(~priorityQueue=minQueue, visited);
 
-    let rec pathConstruct = (n: option(node)) => {
-        switch (n) {
+    let rec pathConstruct = (n: node) => {
+        switch (n.prevNode) {
             | None => []
-            | Some(curr) => {
-                [curr.currCoord, ...pathConstruct(curr.prevNode)]
-            }
+            | Some(prevNode) => [n.currCoord, ...pathConstruct(prevNode)]
         }
     };
     
     switch (lastNode) {
         | Unreacheable => []
-        | Last(n) => pathConstruct(Some(n))
+        | Last(n) => pathConstruct(n)
     };
  };
