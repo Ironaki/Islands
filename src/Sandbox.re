@@ -15,14 +15,23 @@ let reducer =  (state, action) => {
 
 [@react.component]
 let make = () => {
-  let (state, dispatch) = React.useReducer(reducer, initialState);
+  /* unused variables are prefixed with an underscore */
+  let onSubmit = _event => {
+    Js.log("Hello this is a log!")
+  };
+   
 
-  /* useEffect hook takes 0 arguments hence, useEffect0 */
-  React.useEffect0(() => {
-    let timerId = Js.Global.setInterval(() => dispatch(Tick), 1000);
-    Some(() => Js.Global.clearInterval(timerId));
-  });
-
-  /* ints need to be converted to strings, that are then consumed by React.string */
-  <div> {React.string(string_of_int(state.count))} </div>;
+  /* onSubmit=onSubmit turns to just onSubmit */
+  <form onSubmit>
+      <input
+        /* class names work the same way */
+        className="w-full"
+        /* type_ is underscored b/c its a reserved word in Reason */
+        type_="text"
+        /* No brackets needed! */
+        autoFocus=true
+        placeholder="Game Code"
+      />
+      <button type_="submit"> {React.string("Button label")} </button>
+    </form>;
 };

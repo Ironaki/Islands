@@ -1,14 +1,11 @@
+open SharedType;
+
 type state = {
     grid: array(array(Unit.unitType))
 };
 
 let initialState = {
     grid: Array.make_matrix(4, 8, Unit.Road)
-};
-
-type coord = {
-    row: int,
-    col: int
 };
 
 let gridReducer = (state, coord) => {
@@ -22,7 +19,9 @@ let gridReducer = (state, coord) => {
 let make = () => {
     let (state, dispatch) = React.useReducer(gridReducer, initialState);
 
-    Js.log(state);
+    //Js.log(state);
+    Js.log(AStar.aStar(state.grid));
+
     state.grid
     |> Array.mapi((rowId, row) => 
         Array.mapi((colId, _) => 

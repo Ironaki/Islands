@@ -1,18 +1,16 @@
 open Unit;
-open Grid;
+open SharedType;
 
 type node = {
     heuristic: int,
     cost: int,
     currCoord: coord,
-    prevCoord: coord,
+    prevCoord: option(node),
 };
 
 type result =
     | Last(node)
     | Unreacheable;
-
-
 
 let aStar = (grid: array(array(unitType))) => {
     let minQueue = PriorityQueue.make((nodeA, nodeB) => nodeA.heuristic - nodeB.heuristic);
@@ -20,13 +18,13 @@ let aStar = (grid: array(array(unitType))) => {
                                     heuristic: 0, 
                                     cost: 0,
                                     currCoord: {row: 0, col: 0,}, 
-                                    prevCoord: {row: -1, col: -1,}
+                                    prevCoord: None
                                 });
     let rowLen = Array.length(grid);
     let colLen = Array.length(grid[0]);
     let visited = Hashtbl.create(rowLen * colLen);
 
-    let getEuclidean = (coordinate) => abs(rowLen-coordinate.row)+abs(colLen-coordinate.col);
+    let getEuclidean = (coordinate) => abs(rowLen-1-coordinate.row)+abs(colLen-1-coordinate.col);
 
     let getNeighbors = (coordinate: coord, visited) => {
         let right: coord = {...coordinate, col: coordinate.col+1};
@@ -40,7 +38,6 @@ let aStar = (grid: array(array(unitType))) => {
             && grid[coordinate.row][coordinate.col] != Water,
             neighbors);
     };
-
     
 
     let rec aStarRecHelper = (~priorityQueue as pq: PriorityQueue.t(node), visited: Hashtbl.t(coord, unit),) => {
@@ -56,12 +53,26 @@ let aStar = (grid: array(array(unitType))) => {
             let neighborNodes = List.map((neighbor) => 
                 {heuristic: currNode.cost+unitCost(grid[neighbor.row][neighbor.col])+getEuclidean(neighbor),
                 cost: currNode.cost+unitCost(grid[neighbor.row][neighbor.col]),
+/*                 heuristic: currNode.cost+1+getEuclidean(neighbor),
+                cost: currNode.cost+1,  */               
                 currCoord: neighbor,
-                 prevCoord: currNode.currCoord}, neighbors);
+                prevCoord: Some(currNode)}, neighbors);
             let _ = List.map((neighborNode) => PriorityQueue.push(pq, neighborNode), neighborNodes);
             aStarRecHelper(~priorityQueue=pq, visited);
         }
         };
     };
-    aStarRecHelper(~priorityQueue=minQueue, visited);
-};
+    let lastNode = aStarRecHelper(~priorityQueue=minQueue, visited);
+
+    let rec pathConstruct = (n: node) => {
+        switch (n.prevCoord) {
+            | None => []
+            | Some(n) => [n.currCoord, ...pathConstruct(n)]
+        }
+    };
+    
+    switch (lastNode) {
+        | Unreacheable => []
+        | Last(n) => pathConstruct(n)
+    };
+ };

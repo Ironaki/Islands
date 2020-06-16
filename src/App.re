@@ -15,7 +15,7 @@ let reducer = (state, action) =>
 [@react.component]
 let make = () => {
   let (state, dispatch) = React.useReducer(reducer, initialState);
-  Js.log(state);
+  //Js.log(state);
   <main>
     {React.string("Oh hello")}
     <div>

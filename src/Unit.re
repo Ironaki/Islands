@@ -33,7 +33,7 @@ let unitCost = (u: unitType) => {
     switch (u) {
     | Road => 1
     | Mountain => 3
-    | Water => -1  // Should never call on Water
+    | Water => max_int
     };
 };
 
@@ -44,10 +44,6 @@ type state = {
 let initialState = {
     unit: Road
 };
-
-/* let reducer = (state, _) => {
-    {unit: unitChange(state.unit)}
-}; */
 
 [@react.component]
 let make = (~id, ~toggleUnit, ~unit as u, ~coord) => {

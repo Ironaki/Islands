@@ -31,5 +31,10 @@ module.exports = {
         use: ["style-loader", "css-loader"]
       }
     ]
+  },
+  resolve: {
+    alias: {
+      "tinyqueue": __dirname + "/node_modules/tinyqueue/tinyqueue.js"
+    }
   }
 }
