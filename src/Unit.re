@@ -46,11 +46,11 @@ let initialState = {
 };
 
 [@react.component]
-let make = (~id, ~toggleUnit, ~unit as u, ~coord) => {
+let make = (~id, ~toggleUnit, ~unit as u, ~action) => {
     <button 
         id = id
         className=unitClass(u)
-        onClick = {_ => toggleUnit(coord)}
+        onClick = {_ => toggleUnit(action)}
         >            
         {unitDisplay(u)}
     </button>
