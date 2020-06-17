@@ -15,7 +15,7 @@ type startEnd =
 
 type unitType =
     | Water
-    | Land(terrain, startEnd, path)
+    | Land(terrain, startEnd, path);
 
 
 // Nice Emoji 🏁🚴🚵⛰🌊
@@ -53,6 +53,8 @@ let setStart = (u: unitType) => setPoint(u, Start)
 
 let setEnd = (u: unitType) => setPoint(u, End)
 
+let setOrdinary = (u: unitType) => setPoint(u, Ordinary)
+
 let unitChange = (u: unitType) => {
     switch (u) {
         | Land(Road, Ordinary, NotPath) => Land(Mountain, Ordinary, NotPath)
@@ -88,13 +90,34 @@ let unitToPath = (u: unitType) => {
     };
 };
 
+let isWater = (u: unitType) => {
+    switch (u) {
+        | Water => true
+        | Land(_, _, _) => false
+    };
+};
+
+let isStartEnd = (u: unitType) => {
+    switch (u) {
+        | Land(_, Start, _) => true
+        | Land(_, End, _) => true
+        | _ => false
+    }
+};
+
 [@react.component]
-let make = (~id, ~toggleUnit, ~unit as u, ~action, ~foundPath) => {
+let make = (~id, ~dispatch, ~unit as u, ~action, ~foundPath, ~startEndNotSet) => {
     <button 
         id = id
-        className=unitClass(u)
-        //disabled=foundPath
-        onClick = {_ => toggleUnit(action)}
+        className=(unitClass(u))
+        disabled=(switch (foundPath, startEndNotSet, isWater(u), isStartEnd(u)) {
+                    | (true, _, _, _) => true
+                    | (false, false, _, _) => false
+                    | (false, true, true, _) => true
+                    | (false, true, false, false) => false
+                    | (false, true, false, true) => true
+                    })
+        onClick=(_ => dispatch(action))
         >            
         {unitDisplay(u)}
     </button>
