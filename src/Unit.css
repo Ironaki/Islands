@@ -53,3 +53,9 @@
     text-align: center;
     width: 28px;
 }
+
+button:disabled {
+    color: #000;
+    /* border:0; */
+    /* font-size:1.5em; */
+}
