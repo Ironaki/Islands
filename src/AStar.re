@@ -45,7 +45,7 @@ let aStar = (grid: array(array(unitType))) => {
         switch (minNode) {
         | None => Unreacheable
         | Some(currNode) =>
-        if (currNode.currCoord == {row: rowLen - 1, col: colLen - 1}) {
+        if (currNode.currCoord == {row: rowLen-1, col: colLen-1}) {
             Last(currNode);
         } else {
             Hashtbl.add(visited, currNode.currCoord, ());

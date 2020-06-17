@@ -1,11 +1,17 @@
 open SharedType;
+open Unit;
 
 type state = {
-    grid: array(array(Unit.unitType))
+    grid: array(array(unitType)),
+    foundPath: bool
 };
 
 let initialState = {
-    grid: Array.make_matrix(4, 8, Unit.Road)
+    grid: {let base = Array.make_matrix(4, 8, Land(Road, Ordinary, NotPath))
+            base[0][0] = Land(Road, Start, NotPath)
+            base[3][7] = Land(Road, End, NotPath)
+            base},
+    foundPath: false
 };
 
 type action = 
@@ -15,12 +21,13 @@ type action =
 let gridReducer = (state, action) => {
     switch (action) {
         | Toggle(coord) => {
-            state.grid[coord.row][coord.col] = Unit.unitChange(state.grid[coord.row][coord.col]);
-            {grid: state.grid}
+            state.grid[coord.row][coord.col] = unitChange(state.grid[coord.row][coord.col]);
+            {grid: state.grid, foundPath: false};
         }
         | FindPath => {
-            Js.log(AStar.aStar(state.grid));
-            state
+            let path = AStar.aStar(state.grid);
+            let _ = List.map((coord) => state.grid[coord.row][coord.col] = unitToPath(state.grid[coord.row][coord.col]), path);
+            {grid: state.grid, foundPath: !state.foundPath};
         }
     }
 };
@@ -30,11 +37,14 @@ let gridReducer = (state, action) => {
 let make = () => {
     let (state, dispatch) = React.useReducer(gridReducer, initialState);
 
-    Js.log(state);
-
     <div className="grid">
         <button onClick=(_ => dispatch(FindPath))> 
-            {React.string("Find path")}
+            {
+                switch (state.foundPath) {
+                    | true => React.string("Clear Path")
+                    | false => React.string("Find Path")
+                };
+            }
         </button> 
         {state.grid
         |> Array.mapi((rowId, row) => 
