@@ -1,37 +1,56 @@
-/* we create a type for the action */
-type action =
-  | Tick;
+type result('a, 'b) =
+  | Ok('a)
+  | Error('b);
 
-/* and do the same for state */
-type state = {count: int};
+type myPayload = {data: string};
 
-let initialState = {count: 0};
+type myPayloadResults('errorType) = list(result(myPayload, 'errorType));
 
-let reducer =  (state, action) => {
-    switch (action) {
-        | Tick => {count: state.count + 1}
-    }
-};
+let payloadResults: myPayloadResults(string) = [
+  Ok({data: "hi"}),
+  Ok({data: "bye"}),
+  Error("Something wrong happened!")
+];
+
 
 [@react.component]
-let make = () => {
-  /* unused variables are prefixed with an underscore */
-  let onSubmit = _event => {
-    Js.log("Hello this is a log!")
-  };
-   
+let make = (~label, ~onSubmit) => {
+  let (editing, setEditing) = React.useState(() => false);
+  let (value, onChange) = React.useState(() => label);
+  let onCancel = _evt => setEditing(_ => false);
+  let onFocus = event => ReactEvent.Focus.target(event)##select();
+  let other = [2, 3];
+  Js.log([1, ...other]);
+  
+/*   React.useEffect0(
+    () => {
+      onChange(_ => label);
+      Js.log("??");
+      None
+    }); */
 
-  /* onSubmit=onSubmit turns to just onSubmit */
-  <form onSubmit>
+  if (editing) {
+    <form
+      onSubmit={_ => {
+        setEditing(_ => false);
+        onSubmit(value);
+      }}
+      onBlur=onCancel>
       <input
-        /* class names work the same way */
-        className="w-full"
-        /* type_ is underscored b/c its a reserved word in Reason */
-        type_="text"
-        /* No brackets needed! */
-        autoFocus=true
-        placeholder="Game Code"
+        onBlur=onCancel
+        onFocus
+        onChange={
+          event => {
+            let value = ReactEvent.Form.target(event)##value;
+            onChange(_ => value)
+          }
+        }
+        value
       />
-      <button type_="submit"> {React.string("Button label")} </button>
     </form>;
+  } else {
+    <span onDoubleClick={_evt => setEditing(_ => true)}>
+      value->React.string
+    </span>;
+  };
 };

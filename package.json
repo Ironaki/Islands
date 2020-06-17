@@ -30,6 +30,7 @@
     "html-webpack-plugin": "^3.2.0",
     "style-loader": "^1.0.0",
     "css-loader": "^3.2.0",
-    "bs-priority-queue": "^0.1.4"
+    "bs-priority-queue": "^0.1.4",
+    "url-loader": "^4.1.0"
   }
 }

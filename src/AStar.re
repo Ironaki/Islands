@@ -5,7 +5,7 @@ type node = {
     heuristic: int,
     cost: int,
     currCoord: coord,
-    prevCoord: option(node),
+    prevNode: option(node),
 };
 
 type result =
@@ -18,7 +18,7 @@ let aStar = (grid: array(array(unitType))) => {
                                     heuristic: 0, 
                                     cost: 0,
                                     currCoord: {row: 0, col: 0,}, 
-                                    prevCoord: None
+                                    prevNode: None
                                 });
     let rowLen = Array.length(grid);
     let colLen = Array.length(grid[0]);
@@ -45,7 +45,7 @@ let aStar = (grid: array(array(unitType))) => {
         switch (minNode) {
         | None => Unreacheable
         | Some(currNode) =>
-        if (currNode.currCoord == {row: rowLen - 1, col: colLen - 1}) {
+        if (currNode.currCoord == {row: rowLen-1, col: colLen-1}) {
             Last(currNode);
         } else {
             Hashtbl.add(visited, currNode.currCoord, ());
@@ -56,7 +56,7 @@ let aStar = (grid: array(array(unitType))) => {
 /*                 heuristic: currNode.cost+1+getEuclidean(neighbor),
                 cost: currNode.cost+1,  */               
                 currCoord: neighbor,
-                prevCoord: Some(currNode)}, neighbors);
+                prevNode: Some(currNode)}, neighbors);
             let _ = List.map((neighborNode) => PriorityQueue.push(pq, neighborNode), neighborNodes);
             aStarRecHelper(~priorityQueue=pq, visited);
         }
@@ -65,9 +65,9 @@ let aStar = (grid: array(array(unitType))) => {
     let lastNode = aStarRecHelper(~priorityQueue=minQueue, visited);
 
     let rec pathConstruct = (n: node) => {
-        switch (n.prevCoord) {
-            | None => []
-            | Some(n) => [n.currCoord, ...pathConstruct(n)]
+        switch (n.prevNode) {
+            | None => [n.currCoord]
+            | Some(prevNode) => [n.currCoord, ...pathConstruct(prevNode)]
         }
     };
     

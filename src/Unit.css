@@ -1,5 +1,5 @@
 .Road {
-    background: #f0f2e9;
+    background: #e4e4e4;
     border: 1px dashed #999;
     float: left;
     font-size: 25px;
@@ -28,6 +28,20 @@
 
 .Water {
     background: #bde1ff;
+    border: 1px dashed #999;
+    float: left;
+    font-size: 25px;
+    line-height: 34px;
+    height: 28px;
+    margin-right: -1px;
+    margin-top: -1px;
+    padding: 0;
+    text-align: center;
+    width: 28px;
+}
+
+.InPath {
+    background: #05e61b;
     border: 1px dashed #999;
     float: left;
     font-size: 25px;

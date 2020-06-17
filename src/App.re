@@ -33,9 +33,11 @@ let make = () => {
       <World>
       </World>
     </div>
-/*     <div>
-      <Sandbox>
+    <div>
+      <Sandbox 
+        label="Hello"
+        onSubmit={_ => ()}>
       </Sandbox>
-    </div> */
-  </main>;
+    </div>
+  </main>
 };
