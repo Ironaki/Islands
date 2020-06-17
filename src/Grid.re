@@ -7,9 +7,9 @@ type state = {
 };
 
 let initialState = {
-    grid: {let base = Array.make_matrix(4, 8, Land(Road, Ordinary, NotPath))
+    grid: {let base = Array.make_matrix(20, 20, Land(Road, Ordinary, NotPath))
             base[0][0] = Land(Road, Start, NotPath)
-            base[3][7] = Land(Road, End, NotPath)
+            base[19][19] = Land(Road, End, NotPath)
             base},
     foundPath: false
 };

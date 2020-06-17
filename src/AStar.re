@@ -66,7 +66,7 @@ let aStar = (grid: array(array(unitType))) => {
 
     let rec pathConstruct = (n: node) => {
         switch (n.prevNode) {
-            | None => []
+            | None => [n.currCoord]
             | Some(prevNode) => [n.currCoord, ...pathConstruct(prevNode)]
         }
     };

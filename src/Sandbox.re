@@ -19,6 +19,8 @@ let make = (~label, ~onSubmit) => {
   let (value, onChange) = React.useState(() => label);
   let onCancel = _evt => setEditing(_ => false);
   let onFocus = event => ReactEvent.Focus.target(event)##select();
+  let other = [2, 3];
+  Js.log([1, ...other]);
   
 /*   React.useEffect0(
     () => {
