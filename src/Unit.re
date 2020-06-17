@@ -41,6 +41,18 @@ let unitClass = (u: unitType) => {
     }
 }
 
+let setPoint = (u: unitType, pointType) => {
+    switch (u) {
+        | Land(Road, _, _) => Land(Road, pointType, NotPath)
+        | Land(Mountain, _, _) => Land(Mountain, pointType, NotPath)
+        | Water => Water
+    }
+}
+
+let setStart = (u: unitType) => setPoint(u, Start)
+
+let setEnd = (u: unitType) => setPoint(u, End)
+
 let unitChange = (u: unitType) => {
     switch (u) {
         | Land(Road, Ordinary, NotPath) => Land(Mountain, Ordinary, NotPath)
@@ -77,10 +89,11 @@ let unitToPath = (u: unitType) => {
 };
 
 [@react.component]
-let make = (~id, ~toggleUnit, ~unit as u, ~action) => {
+let make = (~id, ~toggleUnit, ~unit as u, ~action, ~foundPath) => {
     <button 
         id = id
         className=unitClass(u)
+        //disabled=foundPath
         onClick = {_ => toggleUnit(action)}
         >            
         {unitDisplay(u)}
