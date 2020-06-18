@@ -5,17 +5,7 @@ type state = {
     startCoord: option(coord),
     endCoord: option(coord),    
     grid: array(array(unitType)),
-    foundPath: bool
-};
-
-let initialState = {    
-    startCoord: Some({row: 0, col:0}),
-    endCoord: Some({row: 19, col: 19}),
-    grid: {let base = Array.make_matrix(20, 20, Land(Road, Ordinary, NotPath))
-            base[0][0] = Land(Road, Start, NotPath)
-            base[19][19] = Land(Road, End, NotPath)
-            base},
-    foundPath: false
+    foundPath: bool,
 };
 
 type action = 
@@ -24,7 +14,8 @@ type action =
     | EnableSetStart
     | EnableSetEnd
     | SetStart(coord)
-    | SetEnd(coord);
+    | SetEnd(coord)
+    | Reconstruct(initType, int, int);
 
 
 let gridReducer = (state, action) => {
@@ -35,17 +26,19 @@ let gridReducer = (state, action) => {
                 startCoord: state.startCoord,
                 endCoord: state.endCoord,    
                 grid: state.grid, 
-                foundPath: false
+                foundPath: false,
             }
         }
         | FindPath => {
-            let path = AStar.aStar(state.grid);
+            let Some(start_) = state.startCoord;
+            let Some(end_) = state.endCoord;
+            let path = AStar.aStar(state.grid, start_, end_);
             let _ = List.map((coord) => state.grid[coord.row][coord.col] = unitToPath(state.grid[coord.row][coord.col]), path);
             {
                 startCoord: state.startCoord,
                 endCoord: state.endCoord,    
                 grid: state.grid, 
-                foundPath: !state.foundPath
+                foundPath: !state.foundPath,
             }
         }
         | EnableSetStart => {
@@ -55,7 +48,7 @@ let gridReducer = (state, action) => {
                 startCoord: None,
                 endCoord: state.endCoord,
                 grid: state.grid,
-                foundPath: state.foundPath
+                foundPath: state.foundPath,
             }            
         }
         | EnableSetEnd => {
@@ -74,7 +67,7 @@ let gridReducer = (state, action) => {
                 startCoord: Some(coord),
                 endCoord: state.endCoord,
                 grid: state.grid,
-                foundPath: state.foundPath
+                foundPath: state.foundPath,
             }
         }
         | SetEnd(coord) => {
@@ -84,6 +77,37 @@ let gridReducer = (state, action) => {
                 endCoord: Some(coord),
                 grid: state.grid,
                 foundPath: state.foundPath
+            }
+        }
+        | Reconstruct(init, rowSize, colSize) => {
+            switch (init) {
+                | Blank => {
+                                startCoord: Some({row: 0, col: 0}),
+                                endCoord: Some({row: rowSize-1, col: colSize-1}),
+                                grid: {let base = Array.make_matrix(rowSize, colSize, Land(Road, Ordinary, NotPath))
+                                        base[0][0] = Land(Road, Start, NotPath)
+                                        base[rowSize-1][colSize-1] = Land(Road, End, NotPath)
+                                        base},
+                                foundPath: false
+                            }
+                | Random => {
+                                startCoord: Some({row: 0, col: 0}),
+                                endCoord: Some({row: rowSize-1, col: colSize-1}),
+                                grid: {let base = Array.make_matrix(rowSize, colSize, Land(Mountain, Ordinary, NotPath))
+                                        base[0][0] = Land(Road, Start, NotPath)
+                                        base[rowSize-1][colSize-1] = Land(Road, End, NotPath)
+                                        base},
+                                foundPath: false
+                            }
+                | TokyoBay => {
+                                startCoord: Some({row: 0, col: 0}),
+                                endCoord: Some({row: rowSize-1, col: colSize-1}),
+                                grid: {let base = Array.make_matrix(rowSize, colSize, Water)
+                                        base[0][0] = Land(Road, Start, NotPath)
+                                        base[rowSize-1][colSize-1] = Land(Road, End, NotPath)
+                                        base},
+                                foundPath: false
+                            }
             }
         }
     }
@@ -99,32 +123,28 @@ let coordNonExist = (someCoord: option(coord)) => {
 
 
 [@react.component]
-let make = () => {
+let make = (~rowSize, ~colSize, ~init, ~reconstructable) => {
+    let initialState = {
+                startCoord: Some({row: 0, col: 0}),
+                endCoord: Some({row: rowSize-1, col: colSize-1}),
+                grid: {let base = Array.make_matrix(rowSize, colSize, Land(Road, Ordinary, NotPath))
+                        base[0][0] = Land(Road, Start, NotPath)
+                        base[rowSize-1][colSize-1] = Land(Road, End, NotPath)
+                        base},
+                foundPath: false
+            }
     let (state, dispatch) = React.useReducer(gridReducer, initialState);
     let noStart = coordNonExist(state.startCoord);
     let noEnd = coordNonExist(state.endCoord);
 
+    Js.log(reconstructable);
     <div className="grid">
-        <button 
-            onClick=(_ => dispatch(EnableSetStart))
-            disabled=(state.foundPath || noStart || noEnd)
-        >
-            {React.string("Set Start")}
-        </button> 
         <button
-            onClick=(_ => dispatch(EnableSetEnd))
-            disabled=(state.foundPath || noStart || noEnd)
-        >
-            {React.string("Set End")}
+            onClick=(_ => dispatch(Reconstruct(init, rowSize, colSize)))
+            disabled=(!reconstructable)
+        >  
+        {React.string("Build New World")}
         </button>
-        <button onClick=(_ => dispatch(FindPath))> 
-            {
-                switch (state.foundPath) {
-                    | true => React.string("Clear Path")
-                    | false => React.string("Find Path")
-                }
-            }
-        </button> 
         {state.grid
         |> Array.mapi((rowId, row) => 
             Array.mapi((colId, _) => 
@@ -153,5 +173,28 @@ let make = () => {
             </div>
         )
         |> React.array;}
+        <button 
+            onClick=(_ => dispatch(EnableSetStart))
+            disabled=(state.foundPath || noStart || noEnd)
+        >
+            {React.string("Set Start")}
+        </button> 
+        <button
+            onClick=(_ => dispatch(EnableSetEnd))
+            disabled=(state.foundPath || noStart || noEnd)
+        >
+            {React.string("Set End")}
+        </button>
+        <button 
+            onClick=(_ => dispatch(FindPath))
+            disabled=(noStart || noEnd)
+            >
+                {
+                    switch (state.foundPath) {
+                        | true => React.string("Clear Path")
+                        | false => React.string("Find Path")
+                    }
+                }
+        </button>        
     </div>
 };
