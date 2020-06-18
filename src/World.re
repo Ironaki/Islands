@@ -43,8 +43,8 @@ let worldReducer = (state, action) => {
 };
 
 let initialSate = {
-    row: 20,
-    col: 20,
+    row: 54,
+    col: 96,
     showEditInfo: false,
     init: Blank
 };
@@ -79,7 +79,6 @@ let make = () => {
                             onChange={
                                 event => {
                                         let value = ReactEvent.Form.target(event)##value;
-                                        Js.log(value);
                                         switch (value) {
                                             | "" => dispatch(SetCol(0))
                                             | _ => dispatch(SetCol(int_of_string(value)))

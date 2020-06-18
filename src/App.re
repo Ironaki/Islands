@@ -17,6 +17,8 @@ let make = () => {
   let (state, dispatch) = React.useReducer(reducer, initialState);
   Random.init(int_of_float(Js.Date.now()));
   Js.log(Random.int(10));
+  let a = [|[|1,2|],[|1,2|]|];
+  Js.log(a);
   <main>
     {React.string("Oh hello")}
     <div>

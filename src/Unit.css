@@ -4,12 +4,12 @@
     float: left;
     font-size: 25px;
     line-height: 34px;
-    height: 28px;
+    height: 15px;
     margin-right: -1px;
     margin-top: -1px;
     padding: 0;
     text-align: center;
-    width: 28px;
+    width: 15px;
 }
 
 .Mountain {
@@ -18,12 +18,12 @@
     float: left;
     font-size: 25px;
     line-height: 34px;
-    height: 28px;
+    height: 15px;
     margin-right: -1px;
     margin-top: -1px;
     padding: 0;
     text-align: center;
-    width: 28px;
+    width: 15px;
 }
 
 .Water {
@@ -32,12 +32,12 @@
     float: left;
     font-size: 25px;
     line-height: 34px;
-    height: 28px;
+    height: 15px;
     margin-right: -1px;
     margin-top: -1px;
     padding: 0;
     text-align: center;
-    width: 28px;
+    width: 15px;
 }
 
 .InPath {
@@ -46,12 +46,12 @@
     float: left;
     font-size: 25px;
     line-height: 34px;
-    height: 28px;
+    height: 15px;
     margin-right: -1px;
     margin-top: -1px;
     padding: 0;
     text-align: center;
-    width: 28px;
+    width: 15px;
 }
 
 button:disabled {

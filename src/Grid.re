@@ -131,7 +131,8 @@ let make = (~rowSize, ~colSize, ~init, ~reconstructable) => {
     let initialState = {
                 startCoord: Some({row: 0, col: 0}),
                 endCoord: Some({row: rowSize-1, col: colSize-1}),
-                grid: {let base = Array.make_matrix(rowSize, colSize, Land(Road, Ordinary, NotPath))
+                grid: {let base = TokyoBay.tokyoBayGrid
+                    //let base = Array.make_matrix(rowSize, colSize, Land(Road, Ordinary, NotPath))
                         base[0][0] = Land(Road, Start, NotPath)
                         base[rowSize-1][colSize-1] = Land(Road, End, NotPath)
                         base},

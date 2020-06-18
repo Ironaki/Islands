@@ -132,6 +132,7 @@ let randomStart = () => randomStartEnd((), Start);
 
 let randomEnd = () => randomStartEnd((), End);
 
+
 [@react.component]
 let make = (~id, ~dispatch, ~unit as u, ~action, ~foundPath, ~startEndNotSet) => {
     <button 
