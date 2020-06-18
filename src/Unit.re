@@ -105,6 +105,33 @@ let isStartEnd = (u: unitType) => {
     }
 };
 
+let randomUnitInit = () => {
+    //Random.init(int_of_float(Js.Date.now()));
+    let r = Random.int(10);
+    if (r < 2) {
+        Land(Mountain, Ordinary, NotPath)
+    } else if (r >= 4) {
+        Land(Road, Ordinary, NotPath)
+    } else {
+        Water
+    }
+};
+
+let randomStartEnd = ((), pointType) => {
+    //Random.init(int_of_float(Js.Date.now()));
+    let r = Random.int(5);
+    Js.log(r);
+    if (r < 2) {
+        Land(Mountain, pointType, NotPath)
+    } else {
+        Land(Road, pointType, NotPath)
+    }
+};
+
+let randomStart = () => randomStartEnd((), Start);
+
+let randomEnd = () => randomStartEnd((), End);
+
 [@react.component]
 let make = (~id, ~dispatch, ~unit as u, ~action, ~foundPath, ~startEndNotSet) => {
     <button 

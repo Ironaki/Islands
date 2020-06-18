@@ -90,14 +90,18 @@ let gridReducer = (state, action) => {
                                         base},
                                 foundPath: false
                             }
-                | Random => {
+                | Random => { let base = Array.make_matrix(rowSize, colSize, Land(Road, Ordinary, NotPath));                            
+                            Array.mapi((rowId, row) => 
+                                Array.mapi((colId, _) => base[rowId][colId] = randomUnitInit(), row)
+                            , base);
+                            base[0][0] = randomStart();
+                            base[rowSize-1][colSize-1] = randomEnd();
+                            {
                                 startCoord: Some({row: 0, col: 0}),
                                 endCoord: Some({row: rowSize-1, col: colSize-1}),
-                                grid: {let base = Array.make_matrix(rowSize, colSize, Land(Mountain, Ordinary, NotPath))
-                                        base[0][0] = Land(Road, Start, NotPath)
-                                        base[rowSize-1][colSize-1] = Land(Road, End, NotPath)
-                                        base},
+                                grid: base,
                                 foundPath: false
+                            }
                             }
                 | TokyoBay => {
                                 startCoord: Some({row: 0, col: 0}),

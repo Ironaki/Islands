@@ -65,8 +65,8 @@ let aStar = (grid: array(array(unitType)), startCoord: coord, endCoord: coord) =
     };
     let lastNode = aStarRecHelper(~priorityQueue=minQueue, visited);
 
-    Js.log(visited);
-    Hashtbl.iter((key, value) => Js.log(key), visited);
+    //Js.log(visited);
+    //Hashtbl.iter((key, value) => Js.log(key), visited);
 
     let rec pathConstruct = (n: node) => {
         switch (n.prevNode) {

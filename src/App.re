@@ -15,7 +15,8 @@ let reducer = (state, action) =>
 [@react.component]
 let make = () => {
   let (state, dispatch) = React.useReducer(reducer, initialState);
-  //Js.log(state);
+  Random.init(int_of_float(Js.Date.now()));
+  Js.log(Random.int(10));
   <main>
     {React.string("Oh hello")}
     <div>
