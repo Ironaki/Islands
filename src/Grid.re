@@ -128,6 +128,7 @@ let coordNonExist = (someCoord: option(coord)) => {
 
 [@react.component]
 let make = (~rowSize, ~colSize, ~init, ~reconstructable) => {
+
     let initialState = {
                 startCoord: Some({row: 0, col: 0}),
                 endCoord: Some({row: rowSize-1, col: colSize-1}),
@@ -143,7 +144,7 @@ let make = (~rowSize, ~colSize, ~init, ~reconstructable) => {
     let noEnd = coordNonExist(state.endCoord);
 
     Js.log(reconstructable);
-    <div className="grid">
+    <div className="grid column">
         <button
             onClick=(_ => dispatch(Reconstruct(init, rowSize, colSize)))
             disabled=(!reconstructable)
@@ -171,6 +172,7 @@ let make = (~rowSize, ~colSize, ~init, ~reconstructable) => {
             |> React.array)
         |> Array.mapi((rowId, row) =>
             <div 
+                className="grid row"
                 key=("row "++string_of_int(rowId))
                 name=("row "++string_of_int(rowId))
                 >

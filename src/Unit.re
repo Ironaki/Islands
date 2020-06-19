@@ -1,5 +1,3 @@
-[%bs.raw {|require('./Unit.css')|}];
-
 type terrain =
     | Road
     | Mountain; 
@@ -21,7 +19,7 @@ type unitType =
 // Nice Emoji 🏁🚴🚵⛰🌊
 let unitDisplay = (u: unitType) => {
     switch (u) {
-        | Water => React.string({js|🌊|js})
+        | Water => React.string({js| |js})
         | Land(_, End, _) => React.string({js|🏁|js})
         | Land(Road, Start, _) => React.string({js|🚴|js})
         | Land(Mountain, Start, _) => React.string({js|🚵|js})

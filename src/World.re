@@ -1,6 +1,6 @@
 open SharedType;
 
-[%bs.raw {|require('./World.css')|}];
+
 
 /* type initType =
     | Blank
@@ -80,7 +80,7 @@ let make = () => {
                                 event => {
                                         let value = ReactEvent.Form.target(event)##value;
                                         switch (value) {
-                                            | "" => dispatch(SetCol(0))
+                                            | "" => dispatch(SetCol(5))
                                             | _ => dispatch(SetCol(int_of_string(value)))
                                         }
                                         
@@ -100,7 +100,7 @@ let make = () => {
                                 event => {
                                         let value = ReactEvent.Form.target(event)##value;
                                         switch (value) {
-                                            | "" => dispatch(SetRow(0))
+                                            | "" => dispatch(SetRow(5))
                                             | _ => dispatch(SetRow(int_of_string(value)))
                                         }
                                     }
