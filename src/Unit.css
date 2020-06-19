@@ -1,5 +1,5 @@
 .Road {
-    background: #e4e4e4;
+    background: #eee;
     border: 1px dashed #999;
     float: left;
     font-size: 25px;
@@ -13,7 +13,7 @@
 }
 
 .Mountain {
-    background: #ffc875;
+    background: #bbb;
     border: 1px dashed #999;
     float: left;
     font-size: 25px;
