@@ -1,0 +1,86 @@
+* {
+    box-sizing: border-box;
+}
+
+.world {
+    margin: auto;
+/*     align-items: center;
+    text-align: center; */
+    width: 80%;
+    height: 100%;
+    /* min-width: 80%; */
+    /*min-height: 80%;*/
+}
+
+.grid.column {
+    display: flex;
+    flex-direction: column;
+}
+
+.grid.row {
+    display: flex;
+    flex-direction: row;
+}
+
+.Road {
+    background: #eee;
+    border: 0.5px dashed #999;
+    float: left;
+    font-size: 15px;
+    /* line-height: 34px; */
+    margin-right: -1px;
+    margin-top: -1px;
+    padding: 0;
+    text-align: center;
+    height: 17px;
+    height: 18px;
+    width: 18px;
+}
+
+.Mountain {
+    background: #bbb;
+    border: 0.5px dashed #999;
+    float: left;
+    font-size: 15px;
+    /*line-height: 34px;*/
+    margin-right: -1px;
+    margin-top: -1px;
+    padding: 0;
+    text-align: center;
+    height: 18px;
+    width: 18px;
+}
+
+.Water {
+    background: #bde1ff;
+    border: 0.5px dashed #999;
+    float: left;
+    font-size: 15px;
+    color: #fff;
+    margin-right: -1px;
+    margin-top: -1px;
+    padding: 0;
+    text-align: center;
+    height: 18px;
+    width: 18px;
+}
+
+.InPath {
+    background: #b5ffbc;
+    border: 1px dashed #999;
+    float: left;
+    font-size: 15px;
+    /* line-height: 34px; */
+    margin-right: -1px;
+    margin-top: -1px;
+    padding: 0;
+    text-align: center;
+    height: 18px;
+    width: 18px;
+}
+
+button:disabled {
+    color: #000;
+    /* border:0; */
+    /* font-size:1.5em; */
+}
