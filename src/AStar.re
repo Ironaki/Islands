@@ -25,8 +25,6 @@ let aStar = (grid: array(array(unitType)), startCoord: coord, endCoord: coord) =
   let colLen = Array.length(grid[0]);
 
   /* Utility functions */
-  let coordStr = coordinate => string_of_int(coordinate.row) ++ " " ++ string_of_int(coordinate.col);
-
   let getEuclidean = coordinate => abs(endCoord.row - coordinate.row) + abs(endCoord.col - coordinate.col);
 
   let getNeighbors = (coordinate, currCost, visited) => {
@@ -41,7 +39,7 @@ let aStar = (grid: array(array(unitType)), startCoord: coord, endCoord: coord) =
          && neiCoord.row < rowLen
          && neiCoord.col >= 0
          && neiCoord.col < colLen
-         && grid[neiCoord.row][neiCoord.col] != Water
+         && !isWater(grid[neiCoord.row][neiCoord.col])
          && (
            !visited->Hashtbl.mem(coordStr(neiCoord))
            || currCost

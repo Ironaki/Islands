@@ -2,9 +2,5 @@
 
 [@react.component]
 let make = () => {
-    <main>
-        <h3>{React.string("Islands - A* Path Search")}</h3>
-        <World>
-        </World>
-    </main>
+  <main> <h3> {React.string("Islands - A* Path Search")} </h3> <World /> </main>;
 };
