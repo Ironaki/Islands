@@ -2,10 +2,10 @@ open Unit;
 open SharedType;
 
 type node = {
-  heuristic: int,
-  cost: int,
+  heuristic: int, // real cost+heuristic
+  cost: int, // real cost
   currCoord: coord,
-  prevNode: option(node),
+  prevNode: option(node) // Link to previous node for path reconstruction, None for starting node
 };
 
 type result =
@@ -16,19 +16,16 @@ let aStar = (grid: array(array(unitType)), startCoord: coord, endCoord: coord) =
   /*
    A* Algorithm
 
-   priority: f(n) = g(n)+h(n)
-   */
+   Select min f(coord) in the priority queue for search, where
+   f(coord) = g(coord)+h(coord)
+   g(coord): actual cost from startCoord to coord
+   h(coord): heuristic estimate from coord to endCoord (Manhattan distance assuming each step cost 1)
+    */
   let rowLen = Array.length(grid);
   let colLen = Array.length(grid[0]);
 
-  let minQueue = PriorityQueue.make((nodeA, nodeB) => nodeA.heuristic - nodeB.heuristic);
-  PriorityQueue.push(minQueue, {heuristic: 0, cost: 0, currCoord: startCoord, prevNode: None});
-
+  /* Utility functions */
   let coordStr = coordinate => string_of_int(coordinate.row) ++ " " ++ string_of_int(coordinate.col);
-
-  // visited map: coordinate -> g(coord)
-  let visited: Hashtbl.t(string, int) = Hashtbl.create(~random=true, colLen * rowLen);
-  visited->Hashtbl.add(coordStr(startCoord), 0);
 
   let getEuclidean = coordinate => abs(endCoord.row - coordinate.row) + abs(endCoord.col - coordinate.col);
 
@@ -37,55 +34,68 @@ let aStar = (grid: array(array(unitType)), startCoord: coord, endCoord: coord) =
     let bottom = {...coordinate, row: coordinate.row - 1};
     let left = {...coordinate, col: coordinate.col - 1};
     let upper = {...coordinate, row: coordinate.row + 1};
-    let neighbors = [right, bottom, left, upper];
-    let validN =
-      List.filter(
-        coordinate =>
-          coordinate.row >= 0
-          && coordinate.row < rowLen
-          && coordinate.col >= 0
-          && coordinate.col < colLen
-          && (
-            !visited->Hashtbl.mem(coordStr(coordinate))
-            || currCost
-            + unitCost(grid[coordinate.row][coordinate.col]) < visited->Hashtbl.find(coordStr(coordinate))
-          )
-          && grid[coordinate.row][coordinate.col] != Water,
-        neighbors,
-      );
-    validN;
+
+    [right, bottom, left, upper]
+    |> List.filter(neiCoord =>
+         neiCoord.row >= 0
+         && neiCoord.row < rowLen
+         && neiCoord.col >= 0
+         && neiCoord.col < colLen
+         && grid[neiCoord.row][neiCoord.col] != Water
+         && (
+           !visited->Hashtbl.mem(coordStr(neiCoord))
+           || currCost
+           + unitCost(grid[neiCoord.row][neiCoord.col]) < visited->Hashtbl.find(coordStr(neiCoord))
+         )
+       );
   };
 
-  let rec aStarRecHelper = (~priorityQueue as pq: PriorityQueue.t(node), visited: Hashtbl.t(string, int), count) => {
+  // pq: pop min(g(coord)+h(coord))
+  let minQueue = PriorityQueue.make((nodeA, nodeB) => nodeA.heuristic - nodeB.heuristic);
+  minQueue->PriorityQueue.push({
+    heuristic: getEuclidean(startCoord),
+    cost: 0,
+    currCoord: startCoord,
+    prevNode: None,
+  });
+
+  // visited map: coordinate: g(coordinate)
+  let visited: Hashtbl.t(string, int) = Hashtbl.create(~random=true, colLen * rowLen);
+  visited->Hashtbl.add(coordStr(startCoord), 0);
+
+  /* Main A* Algorithm.
+     P.S. this recursive function transpile to loop in JavaScript */
+  let rec aStarRec = (~priorityQueue as pq: PriorityQueue.t(node), visited: Hashtbl.t(string, int)) => {
     let minNode = PriorityQueue.pop(pq); // returns an Option
     switch (minNode) {
     | None => Unreacheable
     | Some(currNode) =>
       if (currNode.currCoord == endCoord) {
-        Js.log(count);
         Last(currNode);
       } else {
-        let neighbors = getNeighbors(currNode.currCoord, currNode.cost, visited);
-        let _ = List.map(n => visited->Hashtbl.replace(coordStr(n), currNode.cost + unitCost(grid[n.row][n.col])), neighbors);
+        let {cost: currCost, currCoord} = currNode;
+        let neighbors = getNeighbors(currCoord, currCost, visited);
+        let _ =
+          neighbors |> List.map(n => visited->Hashtbl.replace(coordStr(n), currCost + unitCost(grid[n.row][n.col])));
 
         let neighborNodes =
-          List.map(
-            neighbor =>
-              {
-                heuristic: currNode.cost + unitCost(grid[neighbor.row][neighbor.col]) + getEuclidean(neighbor),
-                cost: currNode.cost + unitCost(grid[neighbor.row][neighbor.col]),
-                currCoord: neighbor,
-                prevNode: Some(currNode),
-              },
-            neighbors,
-          );
-        let _ = List.map(neighborNode => PriorityQueue.push(pq, neighborNode), neighborNodes);
-        aStarRecHelper(~priorityQueue=pq, visited, count + 1);
+          neighbors
+          |> List.map(n =>
+               {
+                 heuristic: currCost + unitCost(grid[n.row][n.col]) + getEuclidean(n),
+                 cost: currCost + unitCost(grid[n.row][n.col]),
+                 currCoord: n,
+                 prevNode: Some(currNode),
+               }
+             );
+        let _ = neighborNodes |> List.map(nn => pq->PriorityQueue.push(nn));
+        aStarRec(~priorityQueue=pq, visited);
       }
     };
   };
-  let lastNode = aStarRecHelper(~priorityQueue=minQueue, visited, 0);
-  Js.log(visited);
+  let lastNode = aStarRec(~priorityQueue=minQueue, visited);
+
+  /* Path Construction */
   let rec pathConstruct = (n: node) => {
     switch (n.prevNode) {
     | None => [n.currCoord]
