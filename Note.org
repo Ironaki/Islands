@@ -16,3 +16,5 @@ Add this to ~webpack.config.js~
 ** Emergency
 ** Non-emergency
 *** useEffect
+*** refmt weird format
+Array.get(state.grid[rowId], colId)

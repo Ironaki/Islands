@@ -2,190 +2,168 @@ open SharedType;
 open Unit;
 
 type state = {
-    startCoord: option(coord),
-    endCoord: option(coord),    
-    grid: array(array(unitType)),
-    foundPath: bool,
+  startCoord: option(coord),
+  endCoord: option(coord),
+  grid: array(array(unitType)),
+  path: option(list(coord)),
 };
 
-type action = 
-    | Toggle(coord)
-    | FindPath
-    | EnableSetStart
-    | EnableSetEnd
-    | SetStart(coord)
-    | SetEnd(coord)
-    | Reconstruct(initType, int, int);
-
-
+// Initial State is Tokyo Bay
 let initialState = {
-    startCoord: Some(TokyoBay.tokyoBayStart),
-    endCoord: Some(TokyoBay.tokyoBayEnd),
-    grid: TokyoBay.tokyoBayGrid,
-    foundPath: false
+  startCoord: Some(TokyoBay.tokyoBayStart),
+  endCoord: Some(TokyoBay.tokyoBayEnd),
+  grid: TokyoBay.tokyoBayGrid,
+  path: None,
+};
+
+let blankState = (rowSize, colSize) => {
+  let base = Array.make_matrix(rowSize, colSize, Land(Road, Ordinary, NotPath));
+  base[0][0] = Land(Road, Start, NotPath);
+  base[rowSize - 1][colSize - 1] = Land(Road, End, NotPath);
+  {
+    startCoord: Some({row: 0, col: 0}),
+    endCoord: Some({row: rowSize - 1, col: colSize - 1}),
+    grid: base,
+    path: None,
+  };
+};
+
+let randomState = (rowSize, colSize) => {
+  let base = Array.make_matrix(rowSize, colSize, Land(Road, Ordinary, NotPath));
+  let _ = Array.mapi((rowId, row) => Array.mapi((colId, _) => base[rowId][colId] = randomUnitInit(), row), base);
+  base[0][0] = randomStart();
+  base[rowSize - 1][colSize - 1] = randomEnd();
+  {
+    startCoord: Some({row: 0, col: 0}),
+    endCoord: Some({row: rowSize - 1, col: colSize - 1}),
+    grid: base,
+    path: None,
+  };
+};
+
+type action =
+  | Toggle(coord)
+  | TogglePath
+  | EnableSetStart // When click on "set start" button
+  | EnableSetEnd //When click on "set end" button
+  | SetStart(coord) // When click on a unit to change it to start
+  | SetEnd(coord) // When click on a unit to change it to end
+  | Reconstruct(initType, int, int);
+
+let exist = (op: option('a)) => {
+  switch (op) {
+  | None => false
+  | Some(_) => true
+  };
+};
+
+// USE WITH CAUTION
+// To avoid compiler warning of not handling None case for option
+// This function will log Error when None branch is reached. Please debug then.
+let getCoordOption = (op: option(coord)) => {
+  switch (op) {
+  | None =>
+    Js.log("Error: getCoordOption should be only applied to option(coord) that could not be None");
+    {row: (-1), col: (-1)};
+  | Some(coord) => coord
+  };
 };
 
 let gridReducer = (state, action) => {
-    switch (action) {
-        | Toggle(coord) => {
-            state.grid[coord.row][coord.col] = unitChange(state.grid[coord.row][coord.col]);
-            {...state, grid:state.grid}
-        }
-        | FindPath => {
-            let Some(start_) = state.startCoord;
-            let Some(end_) = state.endCoord;
-            let path = AStar.aStar(state.grid, start_, end_);
-            let _ = List.map((coord) => state.grid[coord.row][coord.col] = unitToPath(state.grid[coord.row][coord.col]), path);
-            {
-                startCoord: state.startCoord,
-                endCoord: state.endCoord,    
-                grid: state.grid, 
-                foundPath: !state.foundPath,
-            }
-        }
-        | EnableSetStart => {
-            let Some(start) = state.startCoord;
-            state.grid[start.row][start.col] = setOrdinary(state.grid[start.row][start.col]);
-            {
-                startCoord: None,
-                endCoord: state.endCoord,
-                grid: state.grid,
-                foundPath: state.foundPath,
-            }            
-        }
-        | EnableSetEnd => {
-            let Some(end_) = state.endCoord;
-            state.grid[end_.row][end_.col] = setOrdinary(state.grid[end_.row][end_.col]);
-            {
-                startCoord: state.startCoord,
-                endCoord: None,
-                grid: state.grid,
-                foundPath: state.foundPath
-            }                  
-        }
-        | SetStart(coord) => {
-            state.grid[coord.row][coord.col] = setStart(state.grid[coord.row][coord.col]);
-            {
-                startCoord: Some(coord),
-                endCoord: state.endCoord,
-                grid: state.grid,
-                foundPath: state.foundPath,
-            }
-        }
-        | SetEnd(coord) => {
-            state.grid[coord.row][coord.col] = setEnd(state.grid[coord.row][coord.col]);
-            {
-                startCoord: state.startCoord,
-                endCoord: Some(coord),
-                grid: state.grid,
-                foundPath: state.foundPath
-            }
-        }
-        | Reconstruct(init, rowSize, colSize) => {
-            switch (init) {
-                | Blank => {
-                                startCoord: Some({row: 0, col: 0}),
-                                endCoord: Some({row: rowSize-1, col: colSize-1}),
-                                grid: {let base = Array.make_matrix(rowSize, colSize, Land(Mountain, Ordinary, NotPath))
-                                        base[0][0] = Land(Road, Start, NotPath)
-                                        base[rowSize-1][colSize-1] = Land(Road, End, NotPath)
-                                        base},
-                                foundPath: false
-                            }
-                | Random => { let base = Array.make_matrix(rowSize, colSize, Land(Road, Ordinary, NotPath));                            
-                            Array.mapi((rowId, row) => 
-                                Array.mapi((colId, _) => base[rowId][colId] = randomUnitInit(), row)
-                            , base);
-                            base[0][0] = randomStart();
-                            base[rowSize-1][colSize-1] = randomEnd();
-                            {
-                                startCoord: Some({row: 0, col: 0}),
-                                endCoord: Some({row: rowSize-1, col: colSize-1}),
-                                grid: base,
-                                foundPath: false
-                            }
-                            }
-                | TokyoBay => initialState
-            }
-        }
+  switch (action) {
+  | Toggle(coord) =>
+    state.grid[coord.row][coord.col] = unitToggle(state.grid[coord.row][coord.col]);
+    {...state, grid: state.grid};
+  | TogglePath =>
+    let (resPath, nextPath) =
+      switch (state.path) {
+      | None =>
+        let p = AStar.aStar(state.grid, getCoordOption(state.startCoord), getCoordOption(state.endCoord));
+        (p, Some(p));
+      | Some(p) => (p, None)
+      };
+    let _ =
+      resPath |> List.map(coord => state.grid[coord.row][coord.col] = togglePath(state.grid[coord.row][coord.col]));
+    {...state, grid: state.grid, path: nextPath};
+  | EnableSetStart =>
+    let start_ = getCoordOption(state.startCoord);
+    state.grid[start_.row][start_.col] = setOrdinary(state.grid[start_.row][start_.col]);
+    {...state, startCoord: None, grid: state.grid};
+  | EnableSetEnd =>
+    let end_ = getCoordOption(state.endCoord);
+    state.grid[end_.row][end_.col] = setOrdinary(state.grid[end_.row][end_.col]);
+    {...state, endCoord: None, grid: state.grid};
+  | SetStart(coord) =>
+    state.grid[coord.row][coord.col] = setStart(state.grid[coord.row][coord.col]);
+    {...state, startCoord: Some(coord), grid: state.grid};
+  | SetEnd(coord) =>
+    state.grid[coord.row][coord.col] = setEnd(state.grid[coord.row][coord.col]);
+    {...state, endCoord: Some(coord), grid: state.grid};
+  | Reconstruct(init, rowSize, colSize) =>
+    switch (init) {
+    | Blank => blankState(rowSize, colSize)
+    | Random => randomState(rowSize, colSize)
+    | TokyoBay => initialState
     }
+  };
 };
-
-let coordNonExist = (someCoord: option(coord)) => {
-    switch (someCoord) {
-        | None => true
-        | Some(_) => false
-    }
-};
-
-
-
-
 
 [@react.component]
 let make = (~rowSize, ~colSize, ~init, ~reconstructable) => {
-    let (state, dispatch) = React.useReducer(gridReducer, initialState);
-    let noStart = coordNonExist(state.startCoord);
-    let noEnd = coordNonExist(state.endCoord);
+  let (state, dispatch) = React.useReducer(gridReducer, initialState);
 
-    <div className="grid column">
-        <button
-            onClick=(_ => dispatch(Reconstruct(init, rowSize, colSize)))
-            disabled=(!reconstructable)
-        >  
-        {React.string("Build New World")}
-        </button>
-        {state.grid
-        |> Array.mapi((rowId, row) => 
-            Array.mapi((colId, _) => 
-                <Unit 
-                    key=("coord "++string_of_int(rowId)++" "++string_of_int(colId))
-                    id=("unit "++string_of_int(rowId)++" "++string_of_int(colId))
-                    action=(switch (noStart, noEnd) {
-                                | (true, _) => SetStart({row: rowId, col: colId})
-                                | (_, true) => SetEnd({row: rowId, col: colId})
-                                | _ => Toggle({row: rowId, col: colId})                                            
-                            })
-                    dispatch=dispatch
-                    unit=state.grid[rowId][colId]
-                    foundPath=state.foundPath
-                    startEndNotSet=(coordNonExist(state.startCoord) || coordNonExist(state.endCoord))
-                    >
-                </Unit>
-            , row) 
-            |> React.array)
-        |> Array.mapi((rowId, row) =>
-            <div 
-                className="grid row"
-                key=("row "++string_of_int(rowId))
-                name=("row "++string_of_int(rowId))
-                >
-                {row}
-            </div>
+  <div className="grid column">
+    <button onClick={_ => dispatch(Reconstruct(init, rowSize, colSize))} disabled={!reconstructable}>
+      {React.string("Build New World")}
+    </button>
+    {state.grid
+     |> Array.mapi((rowId, row) =>
+          row
+          |> Array.mapi((colId, _) =>
+               <Unit
+                 key={"coord " ++ coordStr({row: rowId, col: colId})}
+                 id={"unit " ++ coordStr({row: rowId, col: colId})}
+                 action={
+                   switch (!exist(state.startCoord), !exist(state.endCoord)) {
+                   | (true, _) => SetStart({row: rowId, col: colId})
+                   | (_, true) => SetEnd({row: rowId, col: colId})
+                   | _ => Toggle({row: rowId, col: colId})
+                   }
+                 }
+                 dispatch
+                 unit={Array.get(state.grid[rowId], colId)}
+                 foundPath={exist(state.path)}
+                 startEndNotSet={!exist(state.startCoord) || !exist(state.endCoord)}
+               />
+             )
+          |> React.array
         )
-        |> React.array;}
-        <button 
-            onClick=(_ => dispatch(EnableSetStart))
-            disabled=(state.foundPath || noStart || noEnd)
-        >
-            {React.string("Set Start")}
-        </button> 
-        <button
-            onClick=(_ => dispatch(EnableSetEnd))
-            disabled=(state.foundPath || noStart || noEnd)
-        >
-            {React.string("Set End")}
-        </button>
-        <button 
-            onClick=(_ => dispatch(FindPath))
-            disabled=(noStart || noEnd)
-            >
-                {
-                    switch (state.foundPath) {
-                        | true => React.string("Clear Path")
-                        | false => React.string("Find Path")
-                    }
-                }
-        </button>        
-    </div>
+     |> Array.mapi((rowId, row) =>
+          <div className="grid row" key={"row " ++ string_of_int(rowId)} name={"row " ++ string_of_int(rowId)}>
+            row
+          </div>
+        )
+     |> React.array}
+    <button
+      onClick={_ => dispatch(EnableSetStart)}
+      disabled={exist(state.path) || !exist(state.startCoord) || !exist(state.endCoord)}>
+      {React.string("Set Start")}
+    </button>
+    <button
+      onClick={_ => dispatch(EnableSetEnd)}
+      disabled={exist(state.path) || !exist(state.startCoord) || !exist(state.endCoord)}>
+      {React.string("Set End")}
+    </button>
+    <button onClick={_ => dispatch(TogglePath)} disabled={!exist(state.startCoord) || !exist(state.endCoord)}>
+      {exist(state.path) ? React.string("Clear Path") : React.string("Find Path")}
+    </button>
+    {switch (state.path) {
+     | None => <h4 />
+     | Some(p) =>
+       switch (p) {
+       | [] => <h4> {React.string("The goal is not reachable :(")} </h4>
+       | _ => <h4> {React.string("Fount the shortest path for you :)")} </h4>
+       }
+     }}
+  </div>;
 };
