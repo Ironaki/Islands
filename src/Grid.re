@@ -18,16 +18,18 @@ type action =
     | Reconstruct(initType, int, int);
 
 
+let initialState = {
+    startCoord: Some(TokyoBay.tokyoBayStart),
+    endCoord: Some(TokyoBay.tokyoBayEnd),
+    grid: TokyoBay.tokyoBayGrid,
+    foundPath: false
+};
+
 let gridReducer = (state, action) => {
     switch (action) {
         | Toggle(coord) => {
             state.grid[coord.row][coord.col] = unitChange(state.grid[coord.row][coord.col]);
-            {
-                startCoord: state.startCoord,
-                endCoord: state.endCoord,    
-                grid: state.grid, 
-                foundPath: false,
-            }
+            {...state, grid:state.grid}
         }
         | FindPath => {
             let Some(start_) = state.startCoord;
@@ -53,7 +55,7 @@ let gridReducer = (state, action) => {
         }
         | EnableSetEnd => {
             let Some(end_) = state.endCoord;
-            state.grid[end_.row][end_.row] = setOrdinary(state.grid[end_.row][end_.row]);
+            state.grid[end_.row][end_.col] = setOrdinary(state.grid[end_.row][end_.col]);
             {
                 startCoord: state.startCoord,
                 endCoord: None,
@@ -84,7 +86,7 @@ let gridReducer = (state, action) => {
                 | Blank => {
                                 startCoord: Some({row: 0, col: 0}),
                                 endCoord: Some({row: rowSize-1, col: colSize-1}),
-                                grid: {let base = Array.make_matrix(rowSize, colSize, Land(Road, Ordinary, NotPath))
+                                grid: {let base = Array.make_matrix(rowSize, colSize, Land(Mountain, Ordinary, NotPath))
                                         base[0][0] = Land(Road, Start, NotPath)
                                         base[rowSize-1][colSize-1] = Land(Road, End, NotPath)
                                         base},
@@ -103,15 +105,7 @@ let gridReducer = (state, action) => {
                                 foundPath: false
                             }
                             }
-                | TokyoBay => {
-                                startCoord: Some({row: 0, col: 0}),
-                                endCoord: Some({row: rowSize-1, col: colSize-1}),
-                                grid: {let base = Array.make_matrix(rowSize, colSize, Water)
-                                        base[0][0] = Land(Road, Start, NotPath)
-                                        base[rowSize-1][colSize-1] = Land(Road, End, NotPath)
-                                        base},
-                                foundPath: false
-                            }
+                | TokyoBay => initialState
             }
         }
     }
@@ -126,24 +120,14 @@ let coordNonExist = (someCoord: option(coord)) => {
 
 
 
+
+
 [@react.component]
 let make = (~rowSize, ~colSize, ~init, ~reconstructable) => {
-
-    let initialState = {
-                startCoord: Some({row: 0, col: 0}),
-                endCoord: Some({row: rowSize-1, col: colSize-1}),
-                grid: {let base = TokyoBay.tokyoBayGrid
-                    //let base = Array.make_matrix(rowSize, colSize, Land(Road, Ordinary, NotPath))
-                        base[0][0] = Land(Road, Start, NotPath)
-                        base[rowSize-1][colSize-1] = Land(Road, End, NotPath)
-                        base},
-                foundPath: false
-            }
     let (state, dispatch) = React.useReducer(gridReducer, initialState);
     let noStart = coordNonExist(state.startCoord);
     let noEnd = coordNonExist(state.endCoord);
 
-    Js.log(reconstructable);
     <div className="grid column">
         <button
             onClick=(_ => dispatch(Reconstruct(init, rowSize, colSize)))

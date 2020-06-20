@@ -1,4 +1,5 @@
 open Unit;
+open SharedType;
 
 let valToUnit = (n) => {
     switch (n) {
@@ -65,7 +66,14 @@ let tokyoBay =
 [|0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,1,1,1,0,1,0,0,0,0,0,0,0,0,1,1|],
 [|0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,1,1|]|]
 
-
-let tokyoBayGrid = Array.mapi((rowId, row) =>
-                            Array.mapi((colId, value) => valToUnit(value), row),
+let tokyoBayGrid = Array.map((row) =>
+                            Array.map((value) => valToUnit(value), row),
                             tokyoBay);
+
+let tokyoBayStart = {row: 0, col: 0};
+let tokyoBayEnd = {row: 48, col: 62};
+
+tokyoBayGrid[tokyoBayStart.row][tokyoBayStart.col] = Land(Road, Start, NotPath);
+tokyoBayGrid[tokyoBayEnd.row][tokyoBayEnd.col] = Land(Road, End, NotPath);
+
+

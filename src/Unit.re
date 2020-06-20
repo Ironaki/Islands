@@ -65,7 +65,7 @@ let unitChange = (u: unitType) => {
 let unitCost = (u: unitType) => {
     switch (u) {
     | Land(Road, _, _) => 1
-    | Land(Mountain, _, _) => 3
+    | Land(Mountain, _, _) => 7
     | Water => max_int
     };
 };

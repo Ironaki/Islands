@@ -1,20 +1,11 @@
 open SharedType;
 
-
-
-/* type initType =
-    | Blank
-    | Random
-    | TokyoBay */
-
 type state = {
     row: int, 
     col: int,
     showEditInfo: bool,
     init: initType
 }
-
-
 
 type action = 
     | ToggleEditInfo
