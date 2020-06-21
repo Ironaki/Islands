@@ -18,7 +18,7 @@ type unitType =
 // Nice Emoji 🏁🚴🚵⛰🌊
 // But too many of them give me trypophobia...
 let randomDisplay = (emoji, toHash) =>
-  if (Hashtbl.hash(toHash) mod 13 == 0) {
+  if (Hashtbl.hash(toHash) mod 29 == 0) {
     React.string(emoji);
   } else {
     React.string({js| |js});

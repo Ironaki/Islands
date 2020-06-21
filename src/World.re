@@ -35,61 +35,79 @@ let worldReducer = (state, action) => {
 
 let initialSate = {row: 54, col: 96, showEditInfo: false, init: Blank};
 
+let inputValid = (row, col) =>
+  if (row >= 3 && row <= 54 && col >= 3 && col <= 96) {
+    true;
+  } else {
+    false;
+  };
+
 [@react.component]
 let make = () => {
   let (state, dispatch) = React.useReducer(worldReducer, initialSate);
   /*  Js.log(state); */
   <div className="world">
+    <Grid
+      rowSize={state.row}
+      colSize={state.col}
+      init={state.init}
+      reconstructable={state.showEditInfo && inputValid(state.row, state.col)}
+    />
     <div className="settingWorld">
-      <button onClick={_ => dispatch(ToggleEditInfo)}>
-        {switch (state.showEditInfo) {
-         | false => React.string("Set World")
-         | true => React.string("Cancel Set World")
-         }}
-      </button>
+      <div>
+        <button onClick={_ => dispatch(ToggleEditInfo)}>
+          {switch (state.showEditInfo) {
+           | false => React.string("Set World")
+           | true => React.string("Cancel Set World")
+           }}
+        </button>
+      </div>
       {if (state.showEditInfo) {
          <div>
-           <form>
-             <label> {React.string("Width")} </label>
-             <input
-               type_="number"
-               value={string_of_int(state.col)}
-               placeholder="Enter width..."
-               onChange={event => {
-                 let value = ReactEvent.Form.target(event)##value;
-                 switch (value) {
-                 | "" => dispatch(SetCol(3))
-                 | _ => dispatch(SetCol(int_of_string(value)))
-                 };
-               }}
-               min="5"
-               max="100"
-             />
-             <label> {React.string("Height")} </label>
-             <input
-               type_="number"
-               value={string_of_int(state.row)}
-               onChange={event => {
-                 let value = ReactEvent.Form.target(event)##value;
-                 switch (value) {
-                 | "" => dispatch(SetRow(3))
-                 | _ => dispatch(SetRow(int_of_string(value)))
-                 };
-               }}
-               min="5"
-               max="100"
-             />
+           <form className="set-world-form">
+             <label>
+               {React.string("Enter Width: ")}
+               <input
+                 type_="number"
+                 value={string_of_int(state.col)}
+                 onChange={event => {
+                   let value = ReactEvent.Form.target(event)##value;
+                   switch (value) {
+                   | "" => dispatch(SetCol(0))
+                   | _ => dispatch(SetCol(int_of_string(value)))
+                   };
+                 }}
+               />
+             </label>
+             <label>
+               {React.string("Enter Height: ")}
+               <input
+                 type_="number"
+                 value={string_of_int(state.row)}
+                 onChange={event => {
+                   let value = ReactEvent.Form.target(event)##value;
+                   switch (value) {
+                   | "" => dispatch(SetRow(0))
+                   | _ => dispatch(SetRow(int_of_string(value)))
+                   };
+                 }}
+               />
+             </label>
              <select onChange={event => dispatch(ToggleInit(ReactEvent.Form.target(event)##value))}>
                <option value="Blank"> {React.string("Blank")} </option>
                <option value="Random"> {React.string("Random")} </option>
                <option value="TokyoBay"> {React.string("Back to Tokyo Bay")} </option>
              </select>
+             {if (inputValid(state.row, state.col)) {
+                <div />;
+              } else {
+                <div> {React.string("Valid Width: 3-96 Valid Height 3-54")} </div>;
+              }}
            </form>
          </div>;
        } else {
          <div />;
        }}
     </div>
-    <Grid rowSize={state.row} colSize={state.col} init={state.init} reconstructable={state.showEditInfo} />
   </div>;
 };

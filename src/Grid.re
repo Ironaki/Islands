@@ -113,9 +113,29 @@ let make = (~rowSize, ~colSize, ~init, ~reconstructable) => {
   let (state, dispatch) = React.useReducer(gridReducer, initialState);
 
   <div className="grid column">
-    <button onClick={_ => dispatch(Reconstruct(init, rowSize, colSize))} disabled={!reconstructable}>
-      {React.string("Build New World")}
-    </button>
+    <div className="searchButton">
+      <button
+        onClick={_ => dispatch(EnableSetStart)}
+        disabled={exist(state.path) || !exist(state.startCoord) || !exist(state.endCoord)}>
+        {React.string("Set Start")}
+      </button>
+      <button onClick={_ => dispatch(TogglePath)} disabled={!exist(state.startCoord) || !exist(state.endCoord)}>
+        {exist(state.path) ? React.string("Clear Path") : React.string("Find Path")}
+      </button>
+      <button
+        onClick={_ => dispatch(EnableSetEnd)}
+        disabled={exist(state.path) || !exist(state.startCoord) || !exist(state.endCoord)}>
+        {React.string("Set End")}
+      </button>
+    </div>
+    {switch (state.path) {
+     | None => <h4> {React.string("Click buttons above")} </h4>
+     | Some(p) =>
+       switch (p) {
+       | [] => <h4> {React.string("The goal is not reachable :(")} </h4>
+       | _ => <h4> {React.string("Found the shortest path for you :)")} </h4>
+       }
+     }}
     {state.grid
      |> Array.mapi((rowId, row) =>
           row
@@ -144,26 +164,8 @@ let make = (~rowSize, ~colSize, ~init, ~reconstructable) => {
           </div>
         )
      |> React.array}
-    <button
-      onClick={_ => dispatch(EnableSetStart)}
-      disabled={exist(state.path) || !exist(state.startCoord) || !exist(state.endCoord)}>
-      {React.string("Set Start")}
+    <button onClick={_ => dispatch(Reconstruct(init, rowSize, colSize))} disabled={!reconstructable}>
+      {React.string("Build New World")}
     </button>
-    <button
-      onClick={_ => dispatch(EnableSetEnd)}
-      disabled={exist(state.path) || !exist(state.startCoord) || !exist(state.endCoord)}>
-      {React.string("Set End")}
-    </button>
-    <button onClick={_ => dispatch(TogglePath)} disabled={!exist(state.startCoord) || !exist(state.endCoord)}>
-      {exist(state.path) ? React.string("Clear Path") : React.string("Find Path")}
-    </button>
-    {switch (state.path) {
-     | None => <h4 />
-     | Some(p) =>
-       switch (p) {
-       | [] => <h4> {React.string("The goal is not reachable :(")} </h4>
-       | _ => <h4> {React.string("Fount the shortest path for you :)")} </h4>
-       }
-     }}
   </div>;
 };
