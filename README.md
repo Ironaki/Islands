@@ -2,22 +2,22 @@
 
 ## Introduction
 
-Islands is a shortest path finder in 2D grid. 
+Islands is a shortest (or minimun cost) path finder in 2D grid. 
 
 There are three types of element in the grid.
-- Road, light grey. Cost 1
-- Slope/Hill/Mountain, darker grey (occassionaly ⛰). Cost 4
+- Road, light gray. Cost 1
+- Slope/Hill/Mountain, darker gray (occasionaly ⛰). Cost 4
 - Water, blue (occasionaly 🌊) . Impassable
 
 Valid directions are up, left, right, down. No diagnoal moving.
 
 `Find Path` founds the path from start to end that minimizes the cost. Path is shown in light green. If there's no path, nothing is shown.
 
-Each element in the grid could be toggled when clicking on it, provided that `Find Path` is not enabled. `Clear path` before edit the grid.
+Each element in the grid could be toggled when clicking on it, provided that `Find Path` is not enabled. `Clear path` before edit the grid if necessary.
 
 `Set Start` and `Set End` enables setting of start point and goal. Click on a element that is not water will set the start or end point.
 
-`Set World` enables setting of the grid. Minimun of 3 X 3 and maximum of 96 X 54 grid is allowed. Possible type of grid initiation are Blank (all road), Random and Tokyo Bay (initial). If you wounder why it's called Tokyo Bay, it's my best attempt to reproduce contour of Tokyo Bay on a 2D grid.  [Take a look on Google Map](https://www.google.com/maps/@35.6438476,139.7549966,13.81z) More on why I choose Tokyo Bay in Inspiration section.
+`Set World` enables setting of the grid. Minimun of 3 X 3 and maximum of 96 X 54 grid is allowed. Possible type of grid initiation are Blank (all road), Random and Tokyo Bay (initial). If you wouder why it's called Tokyo Bay, it's my best attempt to reproduce contour of Tokyo Bay on a 2D grid.  [Take a look on Google Map](https://www.google.com/maps/@35.6438476,139.7549966,13.81z) More on why I choose Tokyo Bay in [inspiration section](https://github.com/Ironaki/Islands#inspiration).
 
 
 ## File Description
