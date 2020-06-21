@@ -51,7 +51,8 @@ let make = () => {
       rowSize={state.row}
       colSize={state.col}
       init={state.init}
-      reconstructable={state.showEditInfo && inputValid(state.row, state.col)}
+      reconstructable={state.showEditInfo}
+      inputValid={inputValid(state.row, state.col)}
     />
     <div className="settingWorld">
       <div>
@@ -65,7 +66,8 @@ let make = () => {
       {if (state.showEditInfo) {
          <div>
            <form className="set-world-form">
-             <label>
+             <label className="empty-label" />
+             <label className="real-label">
                {React.string("Enter Width: ")}
                <input
                  type_="number"
@@ -79,7 +81,7 @@ let make = () => {
                  }}
                />
              </label>
-             <label>
+             <label className="real-label">
                {React.string("Enter Height: ")}
                <input
                  type_="number"
@@ -93,16 +95,16 @@ let make = () => {
                  }}
                />
              </label>
-             <select onChange={event => dispatch(ToggleInit(ReactEvent.Form.target(event)##value))}>
-               <option value="Blank"> {React.string("Blank")} </option>
-               <option value="Random"> {React.string("Random")} </option>
-               <option value="TokyoBay"> {React.string("Back to Tokyo Bay")} </option>
-             </select>
-             {if (inputValid(state.row, state.col)) {
-                <div />;
-              } else {
-                <div> {React.string("Valid Width: 3-96 Valid Height 3-54")} </div>;
-              }}
+             <label className="real-label">
+               {React.string("Choose initiation type: ")}
+               <select onChange={event => dispatch(ToggleInit(ReactEvent.Form.target(event)##value))}>
+                 <option value="Blank"> {React.string("Blank")} </option>
+                 <option value="Random"> {React.string("Random")} </option>
+                 <option value="TokyoBay"> {React.string("Back to Tokyo Bay")} </option>
+               </select>
+               <label className="empty-label" />
+             </label>
+             <label />
            </form>
          </div>;
        } else {

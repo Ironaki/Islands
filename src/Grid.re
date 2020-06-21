@@ -109,7 +109,7 @@ let gridReducer = (state, action) => {
 };
 
 [@react.component]
-let make = (~rowSize, ~colSize, ~init, ~reconstructable) => {
+let make = (~rowSize, ~colSize, ~init, ~reconstructable, ~inputValid) => {
   let (state, dispatch) = React.useReducer(gridReducer, initialState);
 
   <div className="grid column">
@@ -128,9 +128,11 @@ let make = (~rowSize, ~colSize, ~init, ~reconstructable) => {
         {React.string("Set End")}
       </button>
     </div>
-    {switch (state.path) {
-     | None => <h4> {React.string("Click buttons above")} </h4>
-     | Some(p) =>
+    {switch (state.path, exist(state.startCoord), exist(state.endCoord)) {
+     | (None, true, true) => <h4> {React.string("Click Buttons Above or On the Map to Toggle the Terrain")} </h4>
+     | (None, false, _) => <h4> {React.string("Set Start by Clicking on the Map (Cannot set start on Water)")} </h4>
+     | (None, _, _) => <h4> {React.string("Set End by Clicking on the Map (Cannot set start on Water)")} </h4>
+     | (Some(p), _, _) =>
        switch (p) {
        | [] => <h4> {React.string("The goal is not reachable :(")} </h4>
        | _ => <h4> {React.string("Found the shortest path for you :)")} </h4>
@@ -164,8 +166,19 @@ let make = (~rowSize, ~colSize, ~init, ~reconstructable) => {
           </div>
         )
      |> React.array}
-    <button onClick={_ => dispatch(Reconstruct(init, rowSize, colSize))} disabled={!reconstructable}>
-      {React.string("Build New World")}
-    </button>
+    {switch (reconstructable, inputValid) {
+     | (false, _) =>
+       <div className="reconstruct-world"> <h5> {React.string("Change World with the Button Below")} </h5> </div>
+     | (true, false) =>
+       <div className="reconstruct-world">
+         <h5> {React.string("Please Enter Width (3 ~ 96), Height (3 ~ 54)")} </h5>
+       </div>
+     | (true, true) =>
+       <div className="reconstruct-world">
+         <button onClick={_ => dispatch(Reconstruct(init, rowSize, colSize))}>
+           {React.string("Build New World")}
+         </button>
+       </div>
+     }}
   </div>;
 };

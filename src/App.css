@@ -5,7 +5,7 @@
 
 body {
     background-image: url(../img/background.jpeg);    
-    background-size: cover;
+    background-size: 60%;
     background-position: center center;
 }
 
@@ -19,21 +19,15 @@ body {
 }
 
 
-
 .grid.column {
     display: flex;
     flex-direction: column;
     margin: auto;
     align-items: center;
-    /*text-align: center; */
-    /* width: 80%; */
-    /* height: 80vw; */
-    
 }
 
 .grid.row {
     display: flex;
-    /* width:80vw; */
     flex-direction: row;
 }
 
@@ -57,6 +51,16 @@ body {
     flex-direction: row;
 }
 
+.searchButton button {
+    background-color: #fff;
+    border-radius: 4px;
+    width: 100px;
+    height: 30px;
+    padding: 5px;
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
 .grid.row button:focus {
     outline: none;
 }
@@ -77,15 +81,30 @@ body {
     background: #daffde;
 }
 
-.settingWorld button {
-    display: block;
-    margin: auto;
+
+.reconstruct-world button {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 5px 40px;
 }
 
 
+.settingWorld button {
+    display: flex;
+    margin: auto;
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 5px 40px;
+}
+
 .set-world-form {
     display: flex;
+    margin: auto;
     flex-direction: row;
+    margin-top: 20px;
+    align-items: center;
 }
 
 .set-world-form label {
@@ -93,7 +112,15 @@ body {
     margin: auto;
 }
 
+.set-world-form input {
+    display: flex;
+    width: 50px;
+    text-align: center;
+    padding: 0
+}
+
 .footnote {
     font-size: 12px;
     margin-top: 30px;
 }
+
