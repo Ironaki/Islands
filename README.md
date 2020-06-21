@@ -83,6 +83,6 @@ A new scenario is for a person on bike to find an easy path. As a casual cyclist
 
 Living in southern Tokyo, to get to these islands, I need to travel across Minato ward, which is famous for it's slopes. Here's Minato-ku's website: [A lot of the places are named Saka 坂 (slope) in Minato](https://www.city.minato.tokyo.jp/kyouikucenter/kodomo/kids/machinami/saka/index.html). To avoid these slopes, I usually ride east first, and travel along the coast north to Tsukiji or Ginza, then go to the islands. (BTW, You cannot biking across Rainbow Bridge, thus it's impassable on the grid. Technically you can walk your bike across it, but that's not really interesting.)
 
-Why is the cost of slope 4? In a 3 X 3 grid, if there's a slope in the middle, I'm the kind of person who would take the detour. If cost of slope is 3, then travelling through the slope would make no difference to the detour.
+Why is the cost of slope 4? In a 3 X 3 grid, if there's a slope in the middle, I'm the kind of person who would take the detour. If cost of slope is 3, then traveling through the slope would make no difference to the detour.
 
 ![3X3 slope in middle](./demo/3X3.png)
