@@ -10,7 +10,7 @@ let make = () => {
         <ul>
           <li>
             <a href="https://github.com/Ironaki/Islands#usage" target="_blank">
-              {React.string("Instructions")}
+              {React.string("Usage")}
             </a>
           </li>
           <li>
