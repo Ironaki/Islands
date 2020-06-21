@@ -20,7 +20,23 @@ Each element in the grid could be toggled when clicking on it, provided that `Fi
 `Set World` enables setting of the grid. Minimun of 3 X 3 and maximum of 96 X 54 grid is allowed. Possible type of grid initiation are Blank (all road), Random and Tokyo Bay (initial). If you wounder why it's called Tokyo Bay, it's my best attempt to reproduce contour of Tokyo Bay on a 2D grid.  [Take a look on Google Map](https://www.google.com/maps/@35.6438476,139.7549966,13.81z) More on why I choose Tokyo Bay in Inspiration section.
 
 
+## File Description
+
+```
+src
+├── App.re         # App, introduction info & external links
+├── AStar.re       # A* implemetation
+├── Grid.re        # Module for grid, control path search, start/end setting, grid construction
+├── Index.re       # Index
+├── SharedType.re  # Shared types and utility functions
+├── TokyoBay.re    # Initial grid data for Tokyo Bay presentation in 2D grid
+├── Unit.re        # Module for element in grid and change between element type
+└── World.re       # Module for taking grid size and initiation type input
+```
+
 ## Demo
+
+![demo](./demo/demo.gif)
 
 ## Run Project
 
