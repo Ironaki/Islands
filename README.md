@@ -6,8 +6,8 @@ Islands is a shortest (or minimun cost) path finder in 2D grid.
 
 There are three types of element in the grid.
 - Road, light gray. Cost 1
-- Slope/Hill/Mountain, darker gray (occasionaly ⛰). Cost 4
-- Water, blue (occasionaly 🌊) . Impassable
+- Slope/Hill/Mountain, darker gray (occasionally ⛰). Cost 4
+- Water, blue (occasionally 🌊) . Impassable
 
 Valid directions are up, left, right, down. No diagnoal moving.
 
