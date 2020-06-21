@@ -12,7 +12,7 @@ type state = {
 let initialState = {
   startCoord: Some(TokyoBay.tokyoBayStart),
   endCoord: Some(TokyoBay.tokyoBayEnd),
-  grid: TokyoBay.tokyoBayGrid,
+  grid: TokyoBay.tokyoBayGrid(),
   path: None,
 };
 
@@ -103,7 +103,12 @@ let gridReducer = (state, action) => {
     switch (init) {
     | Blank => blankState(rowSize, colSize)
     | Random => randomState(rowSize, colSize)
-    | TokyoBay => initialState
+    | TokyoBay => {
+        startCoord: Some(TokyoBay.tokyoBayStart),
+        endCoord: Some(TokyoBay.tokyoBayEnd),
+        grid: TokyoBay.tokyoBayGrid(),
+        path: None,
+      }
     }
   };
 };
@@ -111,7 +116,6 @@ let gridReducer = (state, action) => {
 [@react.component]
 let make = (~rowSize, ~colSize, ~init, ~reconstructable, ~inputValid) => {
   let (state, dispatch) = React.useReducer(gridReducer, initialState);
-
   <div className="grid column">
     <div className="searchButton">
       <button
@@ -129,7 +133,8 @@ let make = (~rowSize, ~colSize, ~init, ~reconstructable, ~inputValid) => {
       </button>
     </div>
     {switch (state.path, exist(state.startCoord), exist(state.endCoord)) {
-     | (None, true, true) => <h4> {React.string("Click Buttons Above for Different Functions or On the Map to Toggle the Terrain")} </h4>
+     | (None, true, true) =>
+       <h4> {React.string("Click Buttons Above for Different Functions or On the Map to Toggle the Terrain")} </h4>
      | (None, false, _) => <h4> {React.string("Set Start by Clicking on the Map (Cannot set start on Water)")} </h4>
      | (None, _, _) => <h4> {React.string("Set End by Clicking on the Map (Cannot set start on Water)")} </h4>
      | (Some(p), _, _) =>

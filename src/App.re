@@ -8,22 +8,18 @@ let make = () => {
       {React.string("Light Grey - Road - Cost 1 : : Dark Grey - Slope - Cost 4 : : Blue - Water - Impassable")}
     </p>
     <div className="side-bar">
-      <p className="add-info">
-        {React.string("Additional Info.")}
-        <ul>
-          <li>
-            <a href="https://github.com/Ironaki/Islands#introduction" target="_blank"> {React.string("Usage")} </a>
-          </li>
-          <li>
-            <a href="https://github.com/Ironaki/Islands#algorithm" target="_blank"> {React.string("Algorithm")} </a>
-          </li>
-          <li>
-            <a href="https://github.com/Ironaki/Islands#inspiration" target="_blank">
-              {React.string("Inspiration")}
-            </a>
-          </li>
-        </ul>
-      </p>
+      <p className="add-info"> {React.string("Additional Info.")} </p>
+      <ul className="add-info">
+        <li>
+          <a href="https://github.com/Ironaki/Islands#introduction" target="_blank"> {React.string("Usage")} </a>
+        </li>
+        <li>
+          <a href="https://github.com/Ironaki/Islands#algorithm" target="_blank"> {React.string("Algorithm")} </a>
+        </li>
+        <li>
+          <a href="https://github.com/Ironaki/Islands#inspiration" target="_blank"> {React.string("Inspiration")} </a>
+        </li>
+      </ul>
     </div>
     <World />
     <div className="footnote">

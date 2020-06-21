@@ -66,10 +66,12 @@ let tokyoBay =
    [|0,0,0,2,2,0,2,2,2,2,2,0,0,0,1,0,0,0,1,1,1,1,0,0,0,2,2,2,2,2,2,2,2,0,0,0,0,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,1,1,1,0,1,0,0,0,0,0,0,0,0,1,1|],
    [|0,0,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,1,1|]|]
    
-let tokyoBayGrid = Array.map(row => Array.map(value => valToUnit(value), row), tokyoBay);
-
 let tokyoBayStart = {row: 42, col: 4};
 let tokyoBayEnd = {row: 48, col: 62};
 
-tokyoBayGrid[tokyoBayStart.row][tokyoBayStart.col] = Land(Road, Start, NotPath);
-tokyoBayGrid[tokyoBayEnd.row][tokyoBayEnd.col] = Land(Mountain, End, NotPath);
+let tokyoBayGrid = () => {
+  let base = Array.map(row => Array.map(value => valToUnit(value), row), tokyoBay);
+  base[tokyoBayStart.row][tokyoBayStart.col] = Land(Road, Start, NotPath);
+  base[tokyoBayEnd.row][tokyoBayEnd.col] = Land(Mountain, End, NotPath);
+  base;
+}

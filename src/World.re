@@ -45,7 +45,6 @@ let inputValid = (row, col) =>
 [@react.component]
 let make = () => {
   let (state, dispatch) = React.useReducer(worldReducer, initialSate);
-  /*  Js.log(state); */
   <div className="world">
     <Grid
       rowSize={state.row}
