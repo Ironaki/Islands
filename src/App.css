@@ -17,6 +17,12 @@ body {
     font-size: 2em;
 }
 
+.intro {
+    text-align: center;
+    color: #444;
+    font-size: 12px;
+}
+
 .grid.column {
     display: flex;
     flex-direction: column;
@@ -125,8 +131,12 @@ body {
 .side-bar {
     width: 5%;
     position: fixed;
-    top: 400px;
+    top: 200px;
     line-height: 2em;
     font-size: 12px;
+}
+
+.side-bar ul {
+    list-style: none;
 }
 

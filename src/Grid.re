@@ -129,13 +129,13 @@ let make = (~rowSize, ~colSize, ~init, ~reconstructable, ~inputValid) => {
       </button>
     </div>
     {switch (state.path, exist(state.startCoord), exist(state.endCoord)) {
-     | (None, true, true) => <h4> {React.string("Click Buttons Above or On the Map to Toggle the Terrain")} </h4>
+     | (None, true, true) => <h4> {React.string("Click Buttons Above for Different Functions or On the Map to Toggle the Terrain")} </h4>
      | (None, false, _) => <h4> {React.string("Set Start by Clicking on the Map (Cannot set start on Water)")} </h4>
      | (None, _, _) => <h4> {React.string("Set End by Clicking on the Map (Cannot set start on Water)")} </h4>
      | (Some(p), _, _) =>
        switch (p) {
        | [] => <h4> {React.string("The goal is not reachable :(")} </h4>
-       | _ => <h4> {React.string("Found the shortest path for you :)")} </h4>
+       | _ => <h4> {React.string("Found the least-cost path for you :)")} </h4>
        }
      }}
     {state.grid

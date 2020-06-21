@@ -51,12 +51,12 @@ Running in this environment provides hot reloading and support for routing; just
 
 ## Inspiration
 
-When the project is first conceived, I planed to build a shortest path finder for a boat to travel between islands. This is a boring scenario. If all elements in the grid has same cost for traversing, then BFS(bread first search) will be adequate for this purpose, although Dijkstra's and A* will still be faster.
+When the project is first conceived, I planed to build a shortest path finder for a boat to travel between islands. This is a boring scenario. If all elements in the grid have the same cost for traversing, then BFS (bread first search) will be adequate for this purpose, although Dijkstra's and A* will still be faster.
 
-A new scenario is for a person on bike to find a easy path. As a casual cyclist myself, maybe too casual to even be called a cyclist :) , I'm quite averse to slopes. One of my favorite route in Tokyo travels around man-made islands, (Odaiba, Ariake, Toyosu, to name a few). Roads are good, and traffic is few on these islands. This is the reason that I still name this project islands. 
+A new scenario is for a person on bike to find an easy path. As a casual cyclist myself, maybe too casual to even be called a cyclist :) , I'm quite averse to slopes. One of my favorite route in Tokyo travels around some man-made islands, (Odaiba, Ariake, Toyosu, to name a few). Roads are good, and traffic is little on these islands. This is the reason that I still name this project Islands. 
 
 Living in southern Tokyo, to get to these islands, I need to travel across Minato ward, which is famous for it's slopes. Here's Minato-ku's website: [A lot of the places are named Saka 坂 (slope) in Minato](https://www.city.minato.tokyo.jp/kyouikucenter/kodomo/kids/machinami/saka/index.html). To avoid these slopes, I usually ride east first, and travel along the coast north to Tsukiji or Ginza, then go to the islands. (BTW, You cannot biking across Rainbow bridge, thus it's impassable on the grid. Technically you can walk your bike across it, but that's not really interesting.)
 
-Why is the cost of slope 4? In a 3 X 3 grid, if there's a slope in the middle, I would take the detour. If cost of slope is 3, then travelling through the slope would make no difference to the detour.
+Why is the cost of slope 4? In a 3 X 3 grid, if there's a slope in the middle, I'm the kind of person who would take the detour. If cost of slope is 3, then travelling through the slope would make no difference to the detour.
 
 ![3X3 slope in middle](./demo/3X3.png)
