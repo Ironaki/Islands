@@ -15,9 +15,7 @@ body {
     margin-bottom: 1em;
     font-weight: bold;
     font-size: 2em;
-    
 }
-
 
 .grid.column {
     display: flex;
@@ -122,5 +120,12 @@ body {
 .footnote {
     font-size: 12px;
     margin-top: 30px;
+}
+
+.side-bar {
+    width: 7%;
+    position: fixed;
+    top: 400px;
+    line-height: 2em;
 }
 
