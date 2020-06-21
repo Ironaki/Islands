@@ -1,0 +1,142 @@
+* {
+    padding: 0;
+    font-family: Verdana, Geneva, sans-serif
+}
+
+body {
+    background-image: url(../img/background.jpeg);    
+    background-size: 60%;
+    background-position: center center;
+}
+
+.title {
+    text-align: center;
+    color: #035d74;
+    margin-bottom: 1em;
+    font-weight: bold;
+    font-size: 2em;
+}
+
+.intro {
+    text-align: center;
+    color: #444;
+    font-size: 12px;
+}
+
+.grid.column {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    align-items: center;
+}
+
+.grid.row {
+    display: flex;
+    flex-direction: row;
+}
+
+.grid.row button {
+    border: 1px dotted #bbb;
+    font-size: 13px;
+    text-align: center;
+    padding: 0px;
+    line-height: 1px;
+    margin: -0.5px;
+    width: 14px;
+    height: 14px;
+}
+
+.grid.row button:disabled {
+    color: #000;
+}
+
+.searchButton {
+    display: flex;
+    flex-direction: row;
+}
+
+.searchButton button {
+    background-color: #fff;
+    border-radius: 4px;
+    width: 100px;
+    height: 30px;
+    padding: 5px;
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+.grid.row button:focus {
+    outline: none;
+}
+
+.Road {
+    background: #f3f3f3;
+}
+
+.Mountain {
+    background: #dfdfdf;
+}
+
+.Water {
+    background: #bde1ff;
+}
+
+.InPath {
+    background: #daffde;
+}
+
+
+.reconstruct-world button {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 5px 40px;
+}
+
+
+.settingWorld button {
+    display: flex;
+    margin: auto;
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 5px 40px;
+}
+
+.set-world-form {
+    display: flex;
+    margin: auto;
+    flex-direction: row;
+    margin-top: 20px;
+    align-items: center;
+}
+
+.set-world-form label {
+    display: flex;
+    margin: auto;
+}
+
+.set-world-form input {
+    display: flex;
+    width: 50px;
+    text-align: center;
+    padding: 0
+}
+
+.footnote {
+    font-size: 12px;
+    margin-top: 30px;
+}
+
+.side-bar {
+    width: 5%;
+    position: fixed;
+    top: 200px;
+    line-height: 2em;
+    font-size: 12px;
+}
+
+.side-bar ul {
+    list-style: none;
+}
+

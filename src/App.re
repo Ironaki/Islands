@@ -1,38 +1,30 @@
-
-
-type state = {count: int};
-
-type action =
-  | Increment
-  | Decrement;
-
-let initialState = {count: 0};
-
-let reducer = (state, action) =>
-  switch (action) {
-  | Increment => {count: state.count + 1}
-  | Decrement => {count: state.count - 1}
-  };
+[%bs.raw {|require('./App.css')|}];
 
 [@react.component]
 let make = () => {
-  let (state, dispatch) = React.useReducer(reducer, initialState);
-  Js.log(state);
   <main>
-    {React.string("Oh hello")}
-    <div>
-      <button onClick={_ => dispatch(Decrement)}>
-        {React.string("Decrement")}
-      </button>
-      <span className="counter">
-        {state.count |> string_of_int |> React.string}
-      </span>
-      <button onClick={_ => dispatch(Increment)}>
-        {React.string("Increment")}
-      </button>
-
+    <h2 className="title"> {React.string("Islands - A* Path Search")} </h2>
+    <p className="intro">
+      {React.string("Light Grey - Road - Cost 1 : : Dark Grey - Slope - Cost 4 : : Blue - Water - Impassable")}
+    </p>
+    <div className="side-bar">
+      <p className="add-info"> {React.string("Additional Info.")} </p>
+      <ul className="add-info">
+        <li>
+          <a href="https://github.com/Ironaki/Islands#introduction" target="_blank"> {React.string("Usage")} </a>
+        </li>
+        <li>
+          <a href="https://github.com/Ironaki/Islands#algorithm" target="_blank"> {React.string("Algorithm")} </a>
+        </li>
+        <li>
+          <a href="https://github.com/Ironaki/Islands#inspiration" target="_blank"> {React.string("Inspiration")} </a>
+        </li>
+      </ul>
     </div>
-    <World>
-    </World>
+    <World />
+    <div className="footnote">
+      <p> {React.string("Built by Zixuan (Armstrong) Li with ReasonML and ReasonReact. June 2020.")} </p>
+      <a href="https://github.com/Ironaki" target="_blank"> {React.string("GitHub")} </a>
+    </div>
   </main>;
 };

@@ -1,0 +1,22 @@
+* Bug fixing
+** Dependency cycle
+Do not ~open Grid~ in ~AStar.re~
+*** TODO Maybe better ways to solve this?
+** tinyqueue is not a constructor
+https://github.com/mourner/rbush-knn/issues/18
+Add this to ~webpack.config.js~
+#+BEGIN_SRC json
+  resolve: {
+    alias: {
+      "tinyqueue": __dirname + "/node_modules/tinyqueue/tinyqueue.js"
+    }
+  }
+#+END_SRC
+* TODO
+** Emergency
+** Non-emergency
+*** useEffect
+*** refmt weird format
+#+BEGIN_SRC reason
+Array.get(state.grid[rowId], colId)
+#+END_SRC

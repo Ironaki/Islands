@@ -15,6 +15,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: "src/index.html",
+      favicon: "src/favicon.png",
       inject: false
     })
   ],
@@ -29,7 +30,16 @@ module.exports = {
       {
         test: /\.css$/,
         use: ["style-loader", "css-loader"]
+      },
+      {
+        test: /\.(png|jpeg)$/,
+        use: "url-loader"
       }
     ]
+  },
+  resolve: {
+    alias: {
+      "tinyqueue": __dirname + "/node_modules/tinyqueue/tinyqueue.js"
+    }
   }
 }
