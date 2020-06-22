@@ -9,6 +9,8 @@ There are three types of element in the grid.
 - Slope/Hill/Mountain, darker gray (occasionally ⛰). Cost 4
 - Water, blue (occasionally 🌊) . Impassable
 
+Start is labeld as 🚴 (on Road) or 🚵 (on Mountain). End is labeled as 🏁 (couldn't find a good emoji for flag on mountain)
+
 Valid directions are up, left, right, down. No diagnoal moving.
 
 `Find Path` founds the path from start to end that minimizes the cost. Path is shown in light green. If there's no path, nothing is shown.
