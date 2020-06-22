@@ -15,9 +15,9 @@ Valid directions are up, left, right, down. No diagnoal moving.
 
 Each element in the grid could be toggled when clicking on it, provided that `Find Path` is not enabled. `Clear path` before edit the grid if necessary.
 
-`Set Start` and `Set End` enables setting of start point and goal. Click on a element that is not water will set the start or end point.
+`Set Start` and `Set End` enables setting of the start and the end by click on a non-water element.
 
-`Set World` enables setting of the grid. Minimun of 3 X 3 and maximum of 96 X 54 grid is allowed. Possible type of grid initiation are Blank (all road), Random and Tokyo Bay (initial). If you wouder why it's called Tokyo Bay, it's my best attempt to reproduce contour of Tokyo Bay on a 2D grid.  [Take a look on Google Map](https://www.google.com/maps/@35.6438476,139.7549966,13.81z) More on why I choose Tokyo Bay in [inspiration section](https://github.com/Ironaki/Islands#inspiration).
+`Set World` enables setting of the grid. A minimun of 3 X 3 and a maximum of 96 X 54 grid are allowed. Possible type of grid initiation are Blank (all road), Random and Tokyo Bay (initial). If you wonder why it's called Tokyo Bay, it's my best attempt to reproduce contour of Tokyo Bay on a 2D grid.  [Take a look on Google Map](https://www.google.com/maps/@35.6438476,139.7549966,13.81z) More on why I choose Tokyo Bay in [inspiration section](https://github.com/Ironaki/Islands#inspiration).
 
 
 ## File Description
@@ -26,11 +26,11 @@ Each element in the grid could be toggled when clicking on it, provided that `Fi
 src
 ├── App.re         # App, introduction info & external links
 ├── AStar.re       # A* implemetation
-├── Grid.re        # Module for grid, control path search, start/end setting, grid construction
+├── Grid.re        # Module for grid, controls path search, start/end setting, grid construction
 ├── Index.re       # Index
 ├── SharedType.re  # Shared types and utility functions
 ├── TokyoBay.re    # Initial grid data for Tokyo Bay presentation in 2D grid
-├── Unit.re        # Module for element in grid and change between element type
+├── Unit.re        # Module for element in grid, controls change between element type
 └── World.re       # Module for taking grid size and initiation type input
 ```
 
@@ -77,12 +77,12 @@ Running in this environment provides hot reloading and support for routing; just
 
 ## Inspiration
 
-When the project is first conceived, I planed to build a shortest path finder for a boat to travel between islands. This is a boring scenario. If all elements in the grid have the same cost for traversing, then BFS (bread first search) will be adequate for this purpose, although Dijkstra's and A* will still be faster.
+When the project is first conceived, I planed to build a shortest path finder for a boat to travel between islands. This is a boring scenario. If all elements in the grid have the same cost for traversing, then BFS (breadth first search) will be adequatee, although Dijkstra's and A* will still be faster.
 
 A new scenario is for a person on bike to find an easy path. As a casual cyclist myself, maybe too casual to even be called a cyclist :) , I'm quite averse to slopes. One of my favorite route in Tokyo travels around some man-made islands, (Odaiba, Ariake, Toyosu, to name a few). Roads are good, and traffic is little on these islands. This is the reason that I still name this project Islands. 
 
-Living in southern Tokyo, to get to these islands, I need to travel across Minato ward, which is famous for it's slopes. Here's Minato-ku's website: [A lot of the places are named Saka 坂 (slope) in Minato](https://www.city.minato.tokyo.jp/kyouikucenter/kodomo/kids/machinami/saka/index.html). To avoid these slopes, I usually ride east first, and travel along the coast north to Tsukiji or Ginza, then go to the islands. (BTW, You cannot biking across Rainbow Bridge, thus it's impassable on the grid. Technically you can walk your bike across it, but that's not really interesting.)
+Living in southern Tokyo, to get to these islands, I need to travel across Minato ward, which is famous for it's slopes. Here's Minato-ku's website: [A lot of the places are named Saka 坂 (slope) in Minato](https://www.city.minato.tokyo.jp/kyouikucenter/kodomo/kids/machinami/saka/index.html). To avoid these slopes, I usually ride east first, and travel along the coast north to Tsukiji or Ginza, then go to the islands. The shortest path for the initial state in the grid reflect this route. (BTW, You cannot bike across the Rainbow Bridge, thus it's impassable on the initial grid. Technically you can walk your bike across it, but that's not really interesting.)
 
-Why is the cost of slope 4? In a 3 X 3 grid, if there's a slope in the middle, I'm the kind of person who would take the detour. If cost of slope is 3, then traveling through the slope would make no difference to the detour.
+Why is the cost of slope 4? In a 3 X 3 grid, if there's a slope in the middle, I'm the kind of person who would take the detour. If cost of slope is 3, then traveling through the slope would make no difference.
 
 ![3X3 slope in middle](./demo/3X3.png)
