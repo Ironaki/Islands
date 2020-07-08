@@ -77,7 +77,7 @@ Running in this environment provides hot reloading and support for routing; just
 
 ## Inspiration
 
-When the project is first conceived, I planed to build a shortest path finder for a boat to travel between islands. This is a boring scenario. If all elements in the grid have the same cost for traversing, then BFS (breadth first search) will be adequatee, although Dijkstra's and A* will still be faster.
+When the project is first conceived, I planed to build a shortest path finder for a boat to travel between islands. This is a boring scenario. If all elements in the grid have the same cost for traversing, then BFS (breadth first search) will be adequate, although Dijkstra's and A* will still be faster.
 
 A new scenario is for a person on bike to find an easy path. As a casual cyclist myself, maybe too casual to even be called a cyclist :) , I'm quite averse to slopes. One of my favorite route in Tokyo travels around some man-made islands, (Odaiba, Ariake, Toyosu, to name a few). Roads are good, and traffic is little on these islands. This is the reason that I still name this project Islands. 
 
