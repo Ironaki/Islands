@@ -9,6 +9,8 @@ There are three types of element in the grid.
 - Slope/Hill/Mountain, darker gray (occasionally ⛰). Cost 4
 - Water, blue (occasionally 🌊) . Impassable
 
+Start is labeld as 🚴 (on Road) or 🚵 (on Mountain). End is labeled as 🏁 (couldn't find a good emoji for flag on mountain)
+
 Valid directions are up, left, right, down. No diagnoal moving.
 
 `Find Path` founds the path from start to end that minimizes the cost. Path is shown in light green. If there's no path, nothing is shown.
@@ -81,7 +83,7 @@ When the project is first conceived, I planed to build a shortest path finder fo
 
 A new scenario is for a person on bike to find an easy path. As a casual cyclist myself, maybe too casual to even be called a cyclist :) , I'm quite averse to slopes. One of my favorite route in Tokyo travels around some man-made islands, (Odaiba, Ariake, Toyosu, to name a few). Roads are good, and traffic is little on these islands. This is the reason that I still name this project Islands. 
 
-Living in southern Tokyo, to get to these islands, I need to travel across Minato ward, which is famous for it's slopes. Here's Minato-ku's website: [A lot of the places are named Saka 坂 (slope) in Minato](https://www.city.minato.tokyo.jp/kyouikucenter/kodomo/kids/machinami/saka/index.html). To avoid these slopes, I usually ride east first, and travel along the coast north to Tsukiji or Ginza, then go to the islands. The shortest path for the initial state in the grid reflect this route. (BTW, You cannot bike across the Rainbow Bridge, thus it's impassable on the initial grid. Technically you can walk your bike across it, but that's not really interesting.)
+Living in southern Tokyo, to get to these islands, I need to travel across Minato ward, which is famous for it's slopes. Here's Minato-ku's website: [A lot of the places are named Saka 坂 (slope) in Minato](https://www.city.minato.tokyo.jp/kyouikucenter/kodomo/kids/machinami/saka/index.html). To avoid these slopes, I usually ride east first, and travel along the coast north to Tsukiji or Ginza, then go to the islands. The shortest path for the initial state in the grid reflects this route. (BTW, You cannot bike across the Rainbow Bridge, thus it's impassable in the initial grid. Technically you can walk your bike across it, but that's not really interesting.)
 
 Why is the cost of slope 4? In a 3 X 3 grid, if there's a slope in the middle, I'm the kind of person who would take the detour. If cost of slope is 3, then traveling through the slope would make no difference.
 
