@@ -126,7 +126,7 @@ let randomUnitInit = () => {
   };
 };
 
-let randomStartEnd = ((), startEnd) => {
+let randomStartEnd = startEnd => {
   let r = Random.int(5);
   if (r < 2) {
     Land(Mountain, startEnd, NotPath);
@@ -135,9 +135,9 @@ let randomStartEnd = ((), startEnd) => {
   };
 };
 
-let randomStart = () => randomStartEnd((), Start);
+let randomStart = () => randomStartEnd(Start);
 
-let randomEnd = () => randomStartEnd((), End);
+let randomEnd = () => randomStartEnd(End);
 
 [@react.component]
 let make = (~id, ~dispatch, ~unit as u, ~action, ~foundPath, ~startEndNotSet) => {
